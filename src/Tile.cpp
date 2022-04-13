@@ -1,15 +1,17 @@
 
 #include "Tile.h"
 
-Tile::Tile()
-	: m_mode(false)
+Tile::Tile(sf::Vector2f location)
+	: m_mode(false) 
 {
+	m_shape = sf::CircleShape(20.f);
+	m_shape.setPosition(location);
+	m_shape.setFillColor(sf::Color::Blue);
 }
 
-
-void Tile::addAdj(std::shared_ptr <Tile> other)
+void Tile::addAdj(Tile* other)
 {
-	auto i = std::find_if(m_adj.begin(), m_adj.end(), other);
+	auto i = std::find(m_adj.begin(), m_adj.end(), other);
 	if( i != m_adj.end())
 		m_adj.push_back(other);
 }
@@ -26,7 +28,5 @@ bool Tile::getMode() const
 
 void Tile::draw(sf::RenderWindow& window)
 {
-	auto shape = sf::CircleShape(100.f);
-	shape.setFillColor(sf::Color::Blue);
-	window.draw(shape);
+	window.draw(m_shape);
 }
