@@ -20,9 +20,6 @@ public:
 
 private:
 
-	sf::Sprite m_gameBackground;
-	sf::RectangleShape m_boardArea;
-
 	bool m_timerIsOver;
 	bool m_isLvlRunning;
 
