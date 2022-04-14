@@ -11,6 +11,7 @@ public:
 	void addAdj(Tile* other);
 	void setMode(bool newMode);
 	bool getMode() const ;
+	bool isClicked(const sf::Vector2f& location);
 	void draw(sf::RenderWindow& window);
 
 private:

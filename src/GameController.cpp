@@ -1,24 +1,35 @@
 
 #include "GameController.h"
 
-GameController::GameController() { }
+GameController::GameController()
+	:m_window(sf::VideoMode(800, 800), "Circle The Cat")
+{ }
 
 void GameController::run()
 {
-	auto graph = Graph();
-	auto window = sf::RenderWindow(sf::VideoMode(800, 800), "Circle The Cat");
 
-	while (window.isOpen())
+	while (m_window.isOpen())
 	{
-		window.clear();
-		graph.draw(window);
-		window.display();
-		for (auto event = sf::Event{}; window.pollEvent(event); )
+		m_window.clear();
+		m_graph.draw(m_window);
+		m_window.display();
+		for (auto event = sf::Event{}; m_window.pollEvent(event); )
 		{
 			switch (event.type)
 			{
 			case sf::Event::Closed:
-				window.close();
+				m_window.close();
+				break;
+			case sf::Event::MouseButtonReleased:
+				auto location = m_window.mapPixelToCoords(
+					{ event.mouseButton.x, event.mouseButton.y });
+
+				switch (event.mouseButton.button)
+				{
+				case sf::Mouse::Button::Left:
+					m_graph.handleClick(location);
+					break;
+				}
 				break;
 			}
 		}

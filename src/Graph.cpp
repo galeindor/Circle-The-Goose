@@ -1,7 +1,13 @@
 
 #include "Graph.h"
 
-Graph::Graph() { initGraph(); }
+Graph::Graph() 
+{ 
+	srand(time(NULL));
+	initGraph(); 
+}
+
+//=======================================================================================
 
 void Graph::initGraph()
 {
@@ -21,22 +27,55 @@ void Graph::initGraph()
 	for (int i = 0; i < TILES_NUM; i++)
 		for (int j = 0; j < TILES_NUM; j++)
 			createTileAdjacent(i, j);
+	LevelCreate();
 	
 }
 
+//=======================================================================================
+
 void Graph::draw(sf::RenderWindow& window)
 {
-
 	for (auto row : m_tiles)
 	{
-		for (auto tile : row)
+		for (auto& tile : row)
 		{
-			tile.draw(window);
+			tile.draw(window);	
 			
 		}
 	}
 }
 
+//=======================================================================================
+
+void Graph::handleClick(const sf::Vector2f& location)
+{
+
+	/*
+	for (auto row : m_tiles)
+	{
+		for (auto& tile : row)
+		{
+			if (tile.isClicked(location))
+			{
+				tile.setMode(true);
+			}
+		}
+	}
+	*/
+
+	for (int i=0 ; i< TILES_NUM ; i++)
+	{
+		for (int j = 0; j < TILES_NUM; j++)
+		{
+			if (m_tiles[i][j].isClicked(location))
+			{
+				m_tiles[i][j].setMode(true);
+			}
+		}
+	}
+}
+
+//=======================================================================================
 
 void Graph::createTileAdjacent(int i, int j)
 {
@@ -58,4 +97,31 @@ void Graph::createTileAdjacent(int i, int j)
 	if (i > 0 && j < (TILES_NUM - 1) )
 		m_tiles[i][j].addAdj(&m_tiles[i-1][j+1]);
 
+}
+
+//=======================================================================================
+
+void Graph::LevelCreate()
+{
+	int limitOfLitTiles = 7; // change by level 
+	int currentLitTiles = 0;
+
+	for (int i = 0; i < TILES_NUM; i++)
+	{
+		auto row = std::vector<bool>();
+		for (int j = 0; j < TILES_NUM; j++)
+		{
+			row.push_back(false);
+		}
+		m_currLevel.push_back(row);
+	}
+
+	while (currentLitTiles <= limitOfLitTiles)
+	{
+		int rowIndex = rand() % 11;
+		int colIndex = rand() % 11;
+		m_tiles[rowIndex][colIndex].setMode(true);
+		m_currLevel[rowIndex][colIndex] = true;
+		currentLitTiles++;
+	}
 }

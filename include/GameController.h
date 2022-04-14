@@ -22,6 +22,9 @@ public:
 
 private:
 
+	sf::RenderWindow m_window;
+	Graph m_graph;
+
 	bool m_timerIsOver;
 	bool m_isLvlRunning;
 
