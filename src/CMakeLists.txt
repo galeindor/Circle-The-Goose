@@ -2,4 +2,5 @@
                                               "Tile.cpp"
                                               "Graph.cpp"
                                               "GameController.cpp"
+                                              "Enemy.cpp"
                                               )

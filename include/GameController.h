@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-
+#include "Enemy.h"
 #include "Graph.h"
 
 //#include "Resources.h"
@@ -15,15 +15,16 @@ class GameController
 public:
 	GameController();
 	void run();
-	//~GameController();
-	//void drawBoard(sf::RenderWindow& window) const;
+
 	bool updateLevel();
 	void resetBoard();
 
 private:
 
 	sf::RenderWindow m_window;
+	sf::Texture m_texture;
 	Graph m_graph;
+	Enemy m_enemy;
 
 	bool m_timerIsOver;
 	bool m_isLvlRunning;

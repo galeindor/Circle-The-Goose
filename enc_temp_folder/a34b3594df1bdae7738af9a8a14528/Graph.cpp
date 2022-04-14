@@ -39,7 +39,8 @@ void Graph::draw(sf::RenderWindow& window)
 	{
 		for (auto& tile : row)
 		{
-			tile.draw(window);
+			tile.draw(window);	
+			
 		}
 	}
 }

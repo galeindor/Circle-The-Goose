@@ -14,7 +14,7 @@ public:
 	Graph();
 	void resetGraph();
 	void draw(sf::RenderWindow& window);
-	void handleClick(const sf::Vector2f& location);
+	bool handleClick(const sf::Vector2f& location);
 	
 private:
 	void initGraph();

@@ -31,7 +31,7 @@ void GameController::run()
 				switch (event.mouseButton.button)
 				{
 				case sf::Mouse::Button::Left:
-					if (m_graph.handleClick(location)) // calculate enemy movement
+					if (m_graph.handleClick(location))
 						m_enemy.moveEnemyTo(location);
 					break;
 				}
