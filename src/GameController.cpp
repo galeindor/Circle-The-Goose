@@ -32,7 +32,7 @@ void GameController::run()
 				{
 				case sf::Mouse::Button::Left:
 					if (m_graph.handleClick(location)) // calculate enemy movement
-						m_enemy.moveEnemyTo(location);
+						m_enemy.moveEnemyTo(sf::Vector2f(50,0));
 					break;
 				}
 				break;

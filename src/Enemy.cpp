@@ -24,8 +24,8 @@ Enemy::Enemy(sf::Vector2f loc, const sf::Texture& texture)
 void Enemy::moveEnemyTo(const sf::Vector2f& loc)
 {
 	m_lastLoc = m_location;
-	m_location = loc;
-	m_sprite.setPosition(loc);
+	m_location = sf::Vector2f( loc.x + m_location.x , loc.y + m_location.y);
+	m_sprite.setPosition(m_location);
 }
 
 //=======================================================================================
