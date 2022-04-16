@@ -17,16 +17,11 @@ void Graph::initGraph()
 	{
 		auto row = std::vector < Tile > ();
 		rowShift = 1 - rowShift;
+
 		for (int j = 0; j < TILES_NUM ; j++)
 		{
-			auto line = list < Tile* >();
-			//line.push_back(&(m_tiles[i][j]));
-			m_adj.push_back(line);
-
-			auto loc = sf::Vector2f(100 + SPACING * (j + (rowShift / 2) ) , 100 + SPACING * i);
-			auto tile = Tile(loc);
-			row.push_back(tile);
-			tile.index = i * TILES_NUM + j;
+			auto loc = sf::Vector2f(375 + SPACING * (j + (rowShift / 2) ) , 75 + SPACING * i);
+			row.push_back(Tile(loc));
 		}
 		m_tiles.push_back(row);
 	}
@@ -74,7 +69,7 @@ bool Graph::handleClick(const sf::Vector2f& location)
 	{
 		for (int j = 0; j < TILES_NUM; j++)
 		{
-			if (m_tiles[i][j].isClicked(location) && !m_tiles[i][j].getMode())
+			if (m_tiles[i][j].isClicked(location) && !m_tiles[i][j].isPressed())
 			{
 				m_tiles[i][j].setMode(true);
 				return true;
@@ -88,25 +83,24 @@ bool Graph::handleClick(const sf::Vector2f& location)
 
 void Graph::createTileAdjacent(int i, int j)
 {
-	auto index = TILES_NUM * i + j;
 
 	if(j > 0)
-		m_adj[index].push_back(&(m_tiles[i][j-1]));
+		m_tiles[i][j].addAdj(&(m_tiles[i][j-1]));
 
 	if (i > 0)
-		m_adj[index].push_back(&m_tiles[i - 1][j]);
+		m_tiles[i][j].addAdj(&m_tiles[i - 1][j]);
 
 	if (i < (TILES_NUM - 1))
-		m_adj[index].push_back(&m_tiles[i + 1][j]);
+		m_tiles[i][j].addAdj(&m_tiles[i + 1][j]);
 
 	if (j < (TILES_NUM - 1) )
-		m_adj[index].push_back(&m_tiles[i][j+1]);
+		m_tiles[i][j].addAdj(&m_tiles[i][j+1]);
 
 	if (j > 0 && i < (TILES_NUM - 1) )
-		m_adj[index].push_back(&m_tiles[i+1][j-1]);
+		m_tiles[i][j].addAdj(&m_tiles[i+1][j-1]);
 
 	if (i > 0 && j < (TILES_NUM - 1) )
-		m_adj[index].push_back(&m_tiles[i-1][j+1]);
+		m_tiles[i][j].addAdj(&m_tiles[i-1][j+1]);
 
 }
 
@@ -141,40 +135,38 @@ void Graph::LevelCreate()
 
 void Graph::BFS(int row, int col)
 {
-	auto s = TILES_NUM * row + col;
-	
-	//m_adj = new list <Tile*>[m_V];
+	for (auto row : m_tiles)
+	{
+		for (auto& tile : row)
+		{
+			tile.resetTile();
+		}
+	}
 
-	bool* visited = new bool[m_V];
+	auto sourceTile = m_tiles[row][col];
+	sourceTile.visit(0, nullptr);
 
-	//initially none of the vertices is visited
-	for (int i = 0; i < m_V; i++)
-		visited[i] = false;
-
-	// queue to hold BFS traversal sequence 
-	std::queue <int> q;
+	// queue to hold BFS
+	std::queue <Tile*> q;
 
 	// Mark the current node as visited and enqueue it
-	visited[s] = true;
-	(*m_adj[s].begin())->distance = 0;
-	q.push(s);
+	q.push(&sourceTile);
 
 	while (!q.empty())
 	{
-		int a = q.front();
+		auto a = q.front();
 		q.pop(); //delete the first element form queue
 
-		auto start = m_adj[a].begin();
-		for (auto j = ++start ; j != m_adj[a].end(); j++)
+		auto adjList = a->getAdjList();
+		for (auto i = adjList.begin(); i != adjList.end(); i++)
 		{
-			auto currIndex = (*j)->index;
-			if (!visited[currIndex])
+			if (!(*i)->isPressed() && (*i)->isVisited())
 			{
-				visited[currIndex] = true;
-				(*j)->distance = (*start)->distance + 1; // increase distance from source
-				q.push(currIndex);
+				(*i)->visit(a->getDistance() + 1, a);
+				q.push(*i);
 			}
 		}
+
 	}
 }
 

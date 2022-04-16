@@ -7,7 +7,7 @@
 
 
 const int TILES_NUM = 11;
-const int SPACING = 50;
+const int SPACING = 75;
 const int ROW_SPACING = 10;
 
 class Graph
@@ -29,6 +29,5 @@ private:
 	void createTileAdjacent(int i, int j); // create adjacent lists
 
 	vector < vector <Tile> > m_tiles; // all the graph tiles
-	vector < list < Tile* > > m_adj; // adjacent lists
 	vector < vector <bool> > m_currLevel; // member to store current level setup
 };

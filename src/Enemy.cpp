@@ -13,10 +13,7 @@ Enemy::Enemy(sf::Vector2f loc, const sf::Texture& texture)
 {
 	m_sprite.setTexture(texture);
 	m_sprite.setPosition(loc);
-
-	//auto rect = m_sprite.getGlobalBounds();
-	//auto origin = sf::Vector2f( rect.width , rect.height);
-	//m_sprite.setOrigin(origin);
+	//m_sprite.scale(1.2f, 1.2f);
 }
 
 //=======================================================================================

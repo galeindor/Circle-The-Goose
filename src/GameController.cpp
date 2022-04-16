@@ -3,7 +3,7 @@
 
 
 GameController::GameController()
-	:m_window(sf::VideoMode(800, 800), "Circle The Cat") , m_graph(TILES_NUM * TILES_NUM)
+	:m_window(sf::VideoMode(1600, 1000), "Circle The Cat") , m_graph(TILES_NUM * TILES_NUM)
 {
 	m_texture.loadFromFile("enemy.png");
 	m_enemy = Enemy(sf::Vector2f(100, 100), m_texture);
