@@ -9,6 +9,7 @@
 //#include "Consts.h"
 //#include "LevelManager.h"
 
+using std::vector;
 
 class GameController
 {
@@ -29,8 +30,8 @@ private:
 	bool m_timerIsOver;
 	bool m_isLvlRunning;
 
-	std::vector<std::unique_ptr<int>> m_movingObj;
-	std::vector<std::unique_ptr<int>> m_staticObj;
+	vector<std::unique_ptr<int>> m_movingObj;
+	vector<std::unique_ptr<int>> m_staticObj;
 
 
 	sf::Text m_timeText;

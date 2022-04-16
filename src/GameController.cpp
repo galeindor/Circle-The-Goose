@@ -3,7 +3,7 @@
 
 
 GameController::GameController()
-	:m_window(sf::VideoMode(800, 800), "Circle The Cat")
+	:m_window(sf::VideoMode(800, 800), "Circle The Cat") , m_graph(TILES_NUM * TILES_NUM)
 {
 	m_texture.loadFromFile("enemy.png");
 	m_enemy = Enemy(sf::Vector2f(100, 100), m_texture);
@@ -32,7 +32,10 @@ void GameController::run()
 				{
 				case sf::Mouse::Button::Left:
 					if (m_graph.handleClick(location)) // calculate enemy movement
-						m_enemy.moveEnemyTo(sf::Vector2f(50,0));
+					{
+						m_enemy.SetNextTile(sf::Vector2f(50,0));
+						//m_graph.BFS(1, 1);
+					}
 					break;
 				}
 				break;

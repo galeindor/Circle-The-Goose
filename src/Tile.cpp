@@ -11,13 +11,6 @@ Tile::Tile(sf::Vector2f location)
 
 //=======================================================================================
 
-void Tile::addAdj(Tile* other)
-{
-	//auto i = std::find(m_adj.begin(), m_adj.end(), other);
-	//if( i != m_adj.end())
-	m_adj.push_back(other);
-}
-
 //=======================================================================================
 
 void Tile::setMode(bool newMode)
