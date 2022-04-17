@@ -8,20 +8,20 @@ Enemy::Enemy()
 
 //=======================================================================================
 
-Enemy::Enemy(sf::Vector2f loc, const sf::Texture& texture)
-	:m_location(loc), m_lastLoc(loc)
+Enemy::Enemy(Tile* currTile, const sf::Texture& texture)
+	:m_location(currTile->getLocation()), m_lastLoc(currTile->getLocation()) , m_currTile(currTile)
 {
 	m_sprite.setTexture(texture);
-	m_sprite.setPosition(loc);
-	//m_sprite.scale(1.2f, 1.2f);
+	m_sprite.setPosition(currTile->getLocation());
 }
 
 //=======================================================================================
 
-void Enemy::SetNextTile(const sf::Vector2f& loc)
+void Enemy::SetNextTile(Tile* tile)
 {
 	m_lastLoc = m_location;
-	m_location = sf::Vector2f( loc.x + m_location.x , loc.y + m_location.y);
+	m_currTile = tile;
+	m_location = tile->getLocation();
 	m_sprite.setPosition(m_location);
 }
 
@@ -33,11 +33,6 @@ void Enemy::setLastLoc()
 }
 
 //=======================================================================================
-
-sf::Vector2f Enemy::getLastLoc() const
-{
-	return m_lastLoc;
-}
 
 //=======================================================================================
 

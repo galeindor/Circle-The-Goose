@@ -12,18 +12,20 @@ class Tile
 {
 public:
 	Tile(sf::Vector2f loc);
-	void setMode(bool newMode);
-	bool isPressed() const ;
-	bool isClicked(const sf::Vector2f& location);
-	bool isVisited() const;
-	void draw(sf::RenderWindow& window);
-	void addAdj(Tile* other);
 
-	void visit(int distance , Tile* parent);
-	
-	void resetTile();
-	list <Tile*> getAdjList();
-	int getDistance() const;
+	bool	isClicked	(const sf::Vector2f& location)  const;
+	Tile*	getParent()	const;
+	void	resetTile();
+	void	setMode(bool newMode);
+	void	draw(sf::RenderWindow& window);
+	void	addAdj(Tile* other);
+	void	visit(int distance , Tile* parent);
+
+	bool			isPressed()			const		{ return m_mode;				}
+	bool			isVisited()			const		{ return m_visited;				}
+	list <Tile*>	getAdjList()		const		{ return m_adj;					}
+	int				getDistance()		const		{ return m_distance;			}
+	sf::Vector2f	getLocation()		const		{ return m_shape.getPosition(); }
 
 private:
 	bool m_mode; // each tile contains if the tile is coloured.
@@ -31,8 +33,8 @@ private:
 	sf::CircleShape m_shape;
 
 	// for bfs
-	bool m_visited; // if allready visited
-	int m_distance; //
-	Tile* m_parent;
+	bool m_visited; // if allready visited in current BFS run
+	int m_distance; // distance from source tile
+	Tile* m_parent; // parent tile in current BFS run
 
 };

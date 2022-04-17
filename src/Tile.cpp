@@ -16,8 +16,7 @@ void Tile::addAdj(Tile* other)
 	auto i = std::find(m_adj.begin(), m_adj.end(), other);
 	if (i != m_adj.end())
 		m_adj.push_back(other);
-	//auto i = std::find(m_adj.begin(), m_adj.end(), other);
-	//if( i != m_adj.end())
+
 	m_adj.push_back(other);
 }
 //=======================================================================================
@@ -36,13 +35,6 @@ void Tile::setMode(bool newMode)
 
 //=======================================================================================
 
-bool Tile::isPressed() const
-{
-	return m_mode;
-}
-
-//=======================================================================================
-
 void Tile::draw(sf::RenderWindow& window)
 {
 	window.draw(m_shape);
@@ -50,7 +42,7 @@ void Tile::draw(sf::RenderWindow& window)
 
 //=======================================================================================
 
-bool Tile::isClicked(const sf::Vector2f& location)
+bool Tile::isClicked(const sf::Vector2f& location) const
 {
 	if (m_shape.getGlobalBounds().contains(location))
 		return true;
@@ -78,19 +70,9 @@ void Tile::resetTile()
 
 //=======================================================================================
 
-list <Tile*> Tile::getAdjList()
+Tile* Tile::getParent() const
 {
-	return m_adj;
-}
-//=======================================================================================
-
-bool Tile::isVisited() const
-{
-	
-	return m_visited;
-}
-
-int Tile::getDistance() const
-{
-	return m_distance;
+	if (m_parent)
+		return m_parent;
+	return nullptr;
 }

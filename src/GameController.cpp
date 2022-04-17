@@ -3,10 +3,11 @@
 
 
 GameController::GameController()
-	:m_window(sf::VideoMode(1600, 1000), "Circle The Cat") , m_graph(TILES_NUM * TILES_NUM)
+	:m_window(sf::VideoMode(1600, 1000), "Circle The Cat") , m_graph()
 {
 	m_texture.loadFromFile("enemy.png");
-	m_enemy = Enemy(sf::Vector2f(100, 100), m_texture);
+	auto tile = m_graph.getMiddleTile();
+	m_enemy = Enemy(&tile, m_texture);
 }
 
 void GameController::run()
@@ -19,7 +20,7 @@ void GameController::run()
 		m_window.display();
 		for (auto event = sf::Event{}; m_window.pollEvent(event); )
 		{
-			switch (event.type)
+ 			switch (event.type)
 			{
 			case sf::Event::Closed:
 				m_window.close();
@@ -31,10 +32,10 @@ void GameController::run()
 				switch (event.mouseButton.button)
 				{
 				case sf::Mouse::Button::Left:
-					if (m_graph.handleClick(location)) // calculate enemy movement
+					int row, col;
+					if (m_graph.handleClick(location, row , col)) // calculate enemy movement
 					{
-						m_enemy.SetNextTile(sf::Vector2f(50,0));
-						//m_graph.BFS(1, 1);
+						m_enemy.SetNextTile(m_graph.CalculateShortestPath(m_enemy.getCurrTile()));
 					}
 					break;
 				}
