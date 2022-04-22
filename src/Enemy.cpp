@@ -2,17 +2,17 @@
 #include "Enemy.h"
 
 Enemy::Enemy()
-	:m_location(), m_lastLoc(), m_sprite()
+	:m_location(), m_lastLoc(), m_sprite(), m_currTile(sf::Vector2f())
 {
 }
 
 //=======================================================================================
 
-Enemy::Enemy(Tile* currTile, const sf::Texture& texture)
-	:m_location(currTile->getLocation()), m_lastLoc(currTile->getLocation()) , m_currTile(currTile)
+Enemy::Enemy(Tile currTile, const sf::Texture& texture)
+	:m_location(currTile.getLocation()), m_lastLoc(currTile.getLocation()) , m_currTile(currTile)
 {
 	m_sprite.setTexture(texture);
-	m_sprite.setPosition(currTile->getLocation());
+	m_sprite.setPosition(currTile.getLocation());
 }
 
 //=======================================================================================
@@ -20,7 +20,7 @@ Enemy::Enemy(Tile* currTile, const sf::Texture& texture)
 void Enemy::SetNextTile(Tile* tile)
 {
 	m_lastLoc = m_location;
-	m_currTile = tile;
+	m_currTile = *tile;
 	m_location = tile->getLocation();
 	m_sprite.setPosition(m_location);
 }

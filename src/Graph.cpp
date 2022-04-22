@@ -57,7 +57,7 @@ void Graph::draw(sf::RenderWindow& window)
 
 //=======================================================================================
 
-bool Graph::handleClick(const sf::Vector2f& location , int& row , int& col)
+bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 {
 
 	/*
@@ -73,14 +73,18 @@ bool Graph::handleClick(const sf::Vector2f& location , int& row , int& col)
 	}
 	*/
 
-	for (row=0 ; row < TILES_NUM ; row++)
+	if (invalidTile.isClicked(location))
+		return false;
+
+
+	for (int row=0 ; row < TILES_NUM ; row++)
 	{
-		for ( col = 0; col < TILES_NUM; col++)
+		for (int col = 0; col < TILES_NUM; col++)
 		{
 			if (m_tiles[row][col].isClicked(location) && !m_tiles[row][col].isPressed())
 			{
-				m_tiles[row][col].setMode(true);
-				return true;
+					m_tiles[row][col].setMode(true);
+					return true;
 			}
 		}
 	}
@@ -133,6 +137,11 @@ void Graph::LevelCreate()
 	{
 		int rowIndex = rand() % 11;
 		int colIndex = rand() % 11;
+
+		// middle tile is preserved to the enemy , so it may not start pressed
+		if (rowIndex == TILES_NUM / 2 && colIndex == TILES_NUM / 2 ) 
+			break;
+
 		m_tiles[rowIndex][colIndex].setMode(true);
 		m_currLevel[rowIndex][colIndex] = true;
 		currentLitTiles++;
@@ -141,23 +150,23 @@ void Graph::LevelCreate()
 
 //=======================================================================================
 
-void Graph::BFS(Tile* sourceTile)
+void Graph::BFS(Tile sourceTile)
 {
 	for (int i = 0; i < TILES_NUM; i++)
 	{
 		for (int j = 0; j < TILES_NUM; j++)
 		{
-			sourceTile->resetTile();
+			m_tiles[i][j].resetTile();
 		}
 	}
 
-	sourceTile->visit(0, nullptr);
+	sourceTile.visit(0, nullptr);
 
 	// queue to hold BFS
 	std::queue <Tile*> q;
 
 	// Mark the current node as visited and enqueue it
-	q.push(sourceTile);
+	q.push(&sourceTile);
 
 	while (!q.empty())
 	{
@@ -186,7 +195,7 @@ bool isCloser(Tile* tile, Tile* other)
 
 //=======================================================================================
 
-Tile* Graph::CalculateShortestPath(Tile* sourceTile)
+Tile* Graph::CalculateShortestPath(Tile sourceTile)
 {
 	// create the distances between each tile to the current tile ( m_tiles[row][col] ) 
 	// using BFS algorithm

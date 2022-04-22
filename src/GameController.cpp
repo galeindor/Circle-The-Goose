@@ -7,7 +7,7 @@ GameController::GameController()
 {
 	m_texture.loadFromFile("enemy.png");
 	auto tile = m_graph.getMiddleTile();
-	m_enemy = Enemy(&tile, m_texture);
+	m_enemy = Enemy(tile, m_texture);
 }
 
 void GameController::run()
@@ -32,10 +32,13 @@ void GameController::run()
 				switch (event.mouseButton.button)
 				{
 				case sf::Mouse::Button::Left:
-					int row, col;
-					if (m_graph.handleClick(location, row , col)) // calculate enemy movement
+					auto enemyTile = m_enemy.getCurrTile();
+					if (m_graph.handleClick(location, enemyTile) ) // calculate enemy movement
 					{
-						m_enemy.SetNextTile(m_graph.CalculateShortestPath(m_enemy.getCurrTile()));
+						if (m_graph.enemyOnEdge(enemyTile.getLocation()))
+							resetBoard();
+						else
+							m_enemy.SetNextTile(m_graph.CalculateShortestPath(enemyTile));
 					}
 					break;
 				}
@@ -43,4 +46,11 @@ void GameController::run()
 			}
 		}
 	}
+}
+
+void GameController::resetBoard()
+{
+	m_graph = Graph();
+	auto tile = m_graph.getMiddleTile();
+	m_enemy.SetNextTile(&tile);
 }

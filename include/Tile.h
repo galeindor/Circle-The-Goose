@@ -11,6 +11,7 @@ using std::list;
 class Tile
 {
 public:
+
 	Tile(sf::Vector2f loc);
 
 	bool	isClicked	(const sf::Vector2f& location)  const;
