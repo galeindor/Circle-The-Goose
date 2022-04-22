@@ -50,7 +50,7 @@ void GameController::run()
 
 void GameController::resetBoard()
 {
-	m_graph = Graph();
+	m_graph.resetGraph();
 	auto tile = m_graph.getMiddleTile();
 	m_enemy.SetNextTile(&tile);
 }

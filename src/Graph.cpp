@@ -229,3 +229,16 @@ bool Graph::enemyOnEdge(sf::Vector2f enemyLoc)
 }
 
 //=======================================================================================
+
+void Graph::resetGraph()
+{
+
+	for (int i = 0; i < TILES_NUM; i++ )
+	{
+		for (int j = 0; j < TILES_NUM; j++ )
+		{
+			m_tiles[i][j].setMode(m_currLevel[i][j]);
+		}
+	}
+
+}
