@@ -64,7 +64,7 @@ void Tile::visit(int distance, Tile* parent)
 void Tile::resetTile()
 {
 	m_visited = false;
-	m_distance = INFINITY;
+	m_distance = INT_MAX;
 	m_parent = nullptr;
 }
 

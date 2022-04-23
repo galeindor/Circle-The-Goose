@@ -5,7 +5,7 @@
 GameController::GameController()
 	:m_window(sf::VideoMode(1600, 1000), "Circle The Cat") , m_graph()
 {
-	m_texture.loadFromFile("enemy.png");
+	m_texture.loadFromFile("duck.png");
 	auto tile = m_graph.getMiddleTile();
 	m_enemy = Enemy(tile, m_texture);
 }

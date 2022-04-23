@@ -76,7 +76,6 @@ bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 	if (invalidTile.isClicked(location))
 		return false;
 
-
 	for (int row=0 ; row < TILES_NUM ; row++)
 	{
 		for (int col = 0; col < TILES_NUM; col++)
@@ -95,24 +94,27 @@ bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 
 void Graph::createTileAdjacent(int row, int col)
 {
+	auto nCol = col;
+	if (row % 2 == 0)
+		nCol--;
 
-	if( col-1 >= 0)											// if m_tiles[row-1][col] exists
-		m_tiles[row][col].addAdj(&(m_tiles[row][col-1]));
+	if ( col-1 >= 0)											// col-1 is in range , m_tiles[row-1][col] exists
+		m_tiles[row][col].addAdj(&m_tiles[row][col-1]);
 
-	if (row-1 >= 0)											// if m_tiles[row][col-1] exists
-		m_tiles[row][col].addAdj(&m_tiles[row - 1][col]);
-
-	if ( row+1 < TILES_NUM )								// row+1 is in range , m_tiles[row+1][col] exists
-		m_tiles[row][col].addAdj(&m_tiles[row + 1][col]);
-
-	if ( col+1 < TILES_NUM )								// col+1 is in range , m_tiles[row][col+1] exists
+	if ( col+1 < TILES_NUM )									// col+1 is in range , m_tiles[row][col+1] exists
 		m_tiles[row][col].addAdj(&m_tiles[row][col+1]);
 
-	if (col-1 >= 0 && row + 1 < TILES_NUM )					// if m_tiles[row+1][col-1] exists
-		m_tiles[row][col].addAdj(&m_tiles[row+1][col-1]);
+	if ( row-1 >= 0 && nCol >= 0)								// if m_tiles[row][col-1] exists
+		m_tiles[row][col].addAdj(&m_tiles[row - 1][nCol]);
 
-	if (row-1 >= 0 && col + 1 < TILES_NUM )
-		m_tiles[row][col].addAdj(&m_tiles[row-1][col+1]);	// if m_tiles[row-1][col+1] exists
+	if ( row+1 < TILES_NUM && nCol >= 0)						// row+1 is in range , m_tiles[row+1][col] exists
+		m_tiles[row][col].addAdj(&m_tiles[row + 1][nCol]);
+
+	if (row + 1 < TILES_NUM && nCol + 1 < TILES_NUM )			// if m_tiles[row+1][col+1] exists
+		m_tiles[row][col].addAdj(&m_tiles[row+1][nCol+1]);
+
+	if (row-1 >= 0 && nCol + 1 < TILES_NUM )
+		m_tiles[row][col].addAdj(&m_tiles[row-1][nCol+1]);		// if m_tiles[row-1][col+1] exists
 
 }
 
@@ -120,7 +122,7 @@ void Graph::createTileAdjacent(int row, int col)
 
 void Graph::LevelCreate()
 {
-	int limitOfLitTiles = 7; // change by level 
+	int limitOfLitTiles = 15; // change by level 
 	int currentLitTiles = 0;
 	
 	m_currLevel.clear();
@@ -192,32 +194,27 @@ void Graph::BFS(Tile sourceTile)
 
 bool isCloser(Tile* tile, Tile* other)
 {
-	return (tile->getDistance() <= other->getDistance());
+	return (tile->getDistance() < other->getDistance());
 }
 
 //=======================================================================================
 
 Tile* Graph::CalculateShortestPath(Tile sourceTile)
 {
-	// create the distances between each tile to the current tile ( m_tiles[row][col] ) 
-	// using BFS algorithm
+	// create the distances between each tile to the sourceTile using BFS algorithm
 
 	BFS(sourceTile);
 
-	//std::sort(m_edges.begin(), m_edges.end(), isCloser); 
+	std::sort(m_edges.begin(), m_edges.end(), isCloser);
 	
 	auto closestEdge = m_edges.front();
 
-	while (closestEdge && closestEdge->getParent() != &sourceTile)
+	while (closestEdge && closestEdge->getDistance() > 1)
 	{
 		closestEdge = closestEdge->getParent();
 	}
 
-	if (closestEdge)
-		return closestEdge;
-
-	return nullptr;
-
+	return closestEdge;
 }
 
 //=======================================================================================
