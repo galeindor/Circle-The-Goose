@@ -17,7 +17,7 @@ public:
 	GameController();
 	void run();
 
-	bool updateLevel();
+	void nextLevel();
 	void resetBoard();
 
 private:

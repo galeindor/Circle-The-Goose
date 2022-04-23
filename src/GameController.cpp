@@ -35,6 +35,9 @@ void GameController::run()
 					auto enemyTile = m_enemy.getCurrTile();
 					if (m_graph.handleClick(location, enemyTile) ) // calculate enemy movement
 					{
+						if (m_enemy.isTrapped())
+							nextLevel();
+
 						if (m_graph.enemyOnEdge(enemyTile.getLocation()))
 							resetBoard();
 						else
@@ -45,12 +48,20 @@ void GameController::run()
 				break;
 			}
 		}
+		
 	}
 }
 
 void GameController::resetBoard()
 {
 	m_graph.resetGraph();
+	auto tile = m_graph.getMiddleTile();
+	m_enemy.SetNextTile(&tile);
+}
+
+void GameController::nextLevel()
+{
+	m_graph.newLevel();
 	auto tile = m_graph.getMiddleTile();
 	m_enemy.SetNextTile(&tile);
 }

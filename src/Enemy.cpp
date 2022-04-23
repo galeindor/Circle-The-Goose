@@ -9,7 +9,7 @@ Enemy::Enemy()
 //=======================================================================================
 
 Enemy::Enemy(Tile currTile, const sf::Texture& texture)
-	:m_location(currTile.getLocation()), m_lastLoc(currTile.getLocation()) , m_currTile(currTile)
+	:m_location(currTile.getLocation()), m_lastLoc(currTile.getLocation()) , m_currTile(currTile) , m_enemyTrapped(false)
 {
 	m_sprite.setTexture(texture);
 	m_sprite.setPosition(currTile.getLocation());
@@ -19,10 +19,20 @@ Enemy::Enemy(Tile currTile, const sf::Texture& texture)
 
 void Enemy::SetNextTile(Tile* tile)
 {
-	m_lastLoc = m_location;
-	m_currTile = *tile;
-	m_location = tile->getLocation();
-	m_sprite.setPosition(m_location);
+	if (tile == nullptr)
+	{
+		if (!moveRandom()) // if there are no valid moves - enemy is trapped
+			m_enemyTrapped = true;
+		return;
+	}
+	else
+	{
+		m_lastLoc = m_location;
+		m_currTile = *tile;
+		m_location = tile->getLocation();
+		m_sprite.setPosition(m_location);
+		m_enemyTrapped = false;
+	}
 }
 
 //=======================================================================================
@@ -33,6 +43,23 @@ void Enemy::setLastLoc()
 }
 
 //=======================================================================================
+
+bool Enemy::moveRandom()
+{
+	auto adjList = m_currTile.getAdjList();
+	for (auto tile = adjList.begin(); tile != adjList.end(); tile++)
+	{
+		if (!(*tile)->isPressed())
+		{
+			m_lastLoc = m_location;
+			m_currTile = **tile;
+			m_location = (*tile)->getLocation();
+			m_sprite.setPosition(m_location);
+			return true; // there was a valid move
+		}
+	}
+	return false; // no valid moves , enemy is trapped
+}
 
 //=======================================================================================
 

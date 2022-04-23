@@ -122,6 +122,8 @@ void Graph::LevelCreate()
 {
 	int limitOfLitTiles = 7; // change by level 
 	int currentLitTiles = 0;
+	
+	m_currLevel.clear();
 
 	for (int i = 0; i < TILES_NUM; i++)
 	{
@@ -206,7 +208,7 @@ Tile* Graph::CalculateShortestPath(Tile sourceTile)
 	
 	auto closestEdge = m_edges.front();
 
-	while (closestEdge && closestEdge->getDistance() > 1)
+	while (closestEdge && closestEdge->getParent() != &sourceTile)
 	{
 		closestEdge = closestEdge->getParent();
 	}
@@ -232,7 +234,6 @@ bool Graph::enemyOnEdge(sf::Vector2f enemyLoc)
 
 void Graph::resetGraph()
 {
-
 	for (int i = 0; i < TILES_NUM; i++ )
 	{
 		for (int j = 0; j < TILES_NUM; j++ )
@@ -240,5 +241,13 @@ void Graph::resetGraph()
 			m_tiles[i][j].setMode(m_currLevel[i][j]);
 		}
 	}
+}
+
+//=======================================================================================
+
+void Graph::newLevel()
+{
+	LevelCreate();
+	resetGraph();
 
 }

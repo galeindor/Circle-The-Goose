@@ -17,6 +17,7 @@ public:
 	Graph();
 
 	void			resetGraph();
+	void			newLevel();
 	void			draw(sf::RenderWindow& window);
 	bool			handleClick(const sf::Vector2f& location, Tile invalidTile);
 	bool			enemyOnEdge(sf::Vector2f enemyLoc);
