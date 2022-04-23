@@ -5,29 +5,37 @@
 #include <SFML/Audio.hpp>
 #include <vector>
 
-/*
 class Resources
 {
 public:
 	~Resources();
 	static Resources& instance();
 
+	sf::Font* getFont();
+
+/*
 	sf::Texture* getTexture(char c);
 	sf::Texture* getTexture(int i , int j);
 	sf::Texture* getTexture(int i);
 	sf::Texture* getButtonTexture(int i , bool pressed);
 	sf::Texture* getBackground(int index);
 	sf::RectangleShape* getPauseButtons(int index);
-	sf::Font* getFont();
+	
 	void drawPauseScreen(sf::RenderWindow& window);
 	void playMusic();
 	void playSound(int index);
 	void setVolume();
 	void setAnimation(int i ,sf::Time deltaTime, sf::Sprite& player , int dir);
+*/
 
 private:
+
 	Resources();
 	Resources(const Resources&) = default;
+
+	sf::Font m_font;
+
+/*
 	Resources& operator=(const Resources&) = default;
 
 	sf::SoundBuffer m_buffers[NUM_OF_SOUNDS];
@@ -47,10 +55,9 @@ private:
 
 	sf::Texture m_textures[NUM_OF_PICS][DIRECTIONS];
 	std::vector < sf::Texture > m_bg;
-	sf::Font m_font;
+	
 
 	Animation m_animation[5];
+*/
 
 };
-
-*/

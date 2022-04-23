@@ -5,9 +5,7 @@
 GameController::GameController()
 	:m_window(sf::VideoMode(1600, 1000), "Circle The Cat") , m_graph() , m_level(1)
 {
-	auto text = sf::Text();
-	text.setString("undo");
-	m_undoButton = Button(sf::Vector2f(100, 100), text , sf::Vector2f(50, 100));
+	m_undoButton = Button( sf::Vector2f(400, 910) , "undo" );
 	m_texture.loadFromFile("duck.png");
 	auto tile = m_graph.getMiddleTile();
 	m_enemy = Enemy(tile, m_texture);
@@ -17,7 +15,7 @@ void GameController::run()
 {
 	while (m_window.isOpen())
 	{
-		m_window.clear();
+		m_window.clear(sf::Color(169, 169, 169));
 		m_graph.draw(m_window);
 		m_enemy.draw(m_window);
 		m_undoButton.draw(m_window);

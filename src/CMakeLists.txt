@@ -4,5 +4,5 @@
                                               "GameController.cpp"
                                               "Enemy.cpp"
                                               "Button.cpp"
-                                             
+                                              "Resources.cpp"
                                               )

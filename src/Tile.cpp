@@ -6,7 +6,9 @@ Tile::Tile(sf::Vector2f location)
 {
 	m_shape = sf::CircleShape(30.f);
 	m_shape.setPosition(location);
-	m_shape.setFillColor(sf::Color::Blue);
+	m_shape.setFillColor(sf::Color(135, 206, 235));
+	m_shape.setOutlineThickness(3);
+	m_shape.setOutlineColor(sf::Color::Black);
 }
 
 //=======================================================================================
@@ -26,9 +28,9 @@ void Tile::setMode(bool newMode)
 	m_mode = newMode;
 
 	if (newMode)
-		m_shape.setFillColor(sf::Color::Cyan);
+		m_shape.setFillColor(sf::Color(0, 0, 205));
 	else
-		m_shape.setFillColor(sf::Color::Blue);
+		m_shape.setFillColor(sf::Color(135, 206, 235));
 
 	
 }

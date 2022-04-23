@@ -2,34 +2,44 @@
 
 Resources::Resources()
 {
-	loadTextures();
+	/*loadTextures();
 	loadBuffers();
 	loadBackground();
-	m_font.loadFromFile("font.ttf");
 	setPauseScreen();
 	for (int i = 0; i < 5; i++)
 	{
 		m_animation[i] = Animation(m_textures[i],sf::Vector2u(3, 4), 1);
 	}
+	*/
+	m_font.loadFromFile("font.ttf");
 }
 
 //=======================================================================================
 Resources::~Resources(){}
 
+//=======================================================================================
+
+Resources& Resources::instance()
+{
+	static Resources inst;
+	return inst;
+}
+
+//=======================================================================================
+sf::Font* Resources::getFont()
+{
+	return &m_font;
+}
+
 //======================================================================================
 
+/*
 void Resources::setAnimation(int i ,sf::Time deltaTime, sf::Sprite& player , int dir)
 {
 	m_animation[i].update(dir, deltaTime);
 	player.setTextureRect(m_animation[i].uvRect);
 }
 
-//=======================================================================================
-Resources& Resources::instance()
-{
-	static Resources inst;
-	return inst;
-}
 
 //=======================================================================================
 void Resources::setPauseScreen()
@@ -191,12 +201,6 @@ void Resources::drawPauseScreen(sf::RenderWindow& window)
 }
 
 //=======================================================================================
-sf::Font* Resources::getFont()
-{
-	return &m_font;
-}
-
-//=======================================================================================
 void Resources::playMusic()
 {
 	static bool musicOn = false; // check if the music is played.
@@ -209,3 +213,4 @@ void Resources::playMusic()
 	m_music.pause();
 	musicOn = false;
 }
+*/
