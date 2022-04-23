@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Enemy.h"
 #include "Graph.h"
+#include "Button.h"
 
 //#include "Resources.h"
 //#include "Consts.h"
@@ -22,6 +23,8 @@ public:
 
 private:
 
+	void MouseClick(sf::Vector2f location);
+
 	sf::RenderWindow m_window;
 	sf::Texture m_texture;
 	Graph m_graph;
@@ -34,9 +37,11 @@ private:
 	vector<std::unique_ptr<int>> m_staticObj;
 
 
-	sf::Text m_timeText;
+	int m_level;
 	sf::Text m_levelText;
 	sf::Text m_timeLeftText;
+
+	Button m_undoButton;
 };
 
 

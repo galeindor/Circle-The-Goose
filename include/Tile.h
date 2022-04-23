@@ -1,9 +1,15 @@
 #pragma once
 
 #include <list>
+#include "Resources.h"
+
 #include <memory>
 #include <queue>
 #include <SFML/Graphics.hpp>
+#include <algorithm>
+#include <stdlib.h> 
+#include <time.h> 
+
 
 using std::vector;
 using std::list;

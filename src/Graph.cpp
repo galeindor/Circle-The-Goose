@@ -38,7 +38,7 @@ void Graph::initGraph()
 			createTileAdjacent(i, j);
 	}
 
-	LevelCreate(); // create a randomized level
+	LevelCreate(1); // create a randomized level
 	
 }
 
@@ -83,6 +83,7 @@ bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 			if (m_tiles[row][col].isClicked(location) && !m_tiles[row][col].isPressed())
 			{
 					m_tiles[row][col].setMode(true);
+					m_lastPressed = sf::Vector2f(row, col);
 					return true;
 			}
 		}
@@ -95,8 +96,8 @@ bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 void Graph::createTileAdjacent(int row, int col)
 {
 	auto nCol = col;
-	if (row % 2 == 0)
-		nCol--;
+	if (row % 2 != 0)
+		nCol++;
 
 	if ( col-1 >= 0)											// col-1 is in range , m_tiles[row-1][col] exists
 		m_tiles[row][col].addAdj(&m_tiles[row][col-1]);
@@ -104,25 +105,25 @@ void Graph::createTileAdjacent(int row, int col)
 	if ( col+1 < TILES_NUM )									// col+1 is in range , m_tiles[row][col+1] exists
 		m_tiles[row][col].addAdj(&m_tiles[row][col+1]);
 
-	if ( row-1 >= 0 && nCol >= 0)								// if m_tiles[row][col-1] exists
+	if ( row-1 >= 0 && nCol-1 >= 0)								// if m_tiles[row][col-1] exists
+		m_tiles[row][col].addAdj(&m_tiles[row - 1][nCol-1]);
+
+	if ( row+1 < TILES_NUM && nCol-1 >= 0 )						// row+1 is in range , m_tiles[row+1][col] exists
+		m_tiles[row][col].addAdj(&m_tiles[row + 1][nCol-1]);
+
+	if (row - 1 >= 0 && nCol < TILES_NUM )			// if m_tiles[row+1][col+1] exists
 		m_tiles[row][col].addAdj(&m_tiles[row - 1][nCol]);
 
-	if ( row+1 < TILES_NUM && nCol >= 0)						// row+1 is in range , m_tiles[row+1][col] exists
-		m_tiles[row][col].addAdj(&m_tiles[row + 1][nCol]);
-
-	if (row + 1 < TILES_NUM && nCol + 1 < TILES_NUM )			// if m_tiles[row+1][col+1] exists
-		m_tiles[row][col].addAdj(&m_tiles[row+1][nCol+1]);
-
-	if (row-1 >= 0 && nCol + 1 < TILES_NUM )
-		m_tiles[row][col].addAdj(&m_tiles[row-1][nCol+1]);		// if m_tiles[row-1][col+1] exists
+	if (row + 1 < TILES_NUM && nCol < TILES_NUM )
+		m_tiles[row][col].addAdj(&m_tiles[row + 1][nCol]);		// if m_tiles[row-1][col+1] exists
 
 }
 
 //=======================================================================================
 
-void Graph::LevelCreate()
+void Graph::LevelCreate(int levelNum)
 {
-	int limitOfLitTiles = 15; // change by level 
+	int limitOfLitTiles = 15 - (levelNum % 4) * 2 ; // change 
 	int currentLitTiles = 0;
 	
 	m_currLevel.clear();
@@ -242,9 +243,16 @@ void Graph::resetGraph()
 
 //=======================================================================================
 
-void Graph::newLevel()
+void Graph::newLevel(int level)
 {
-	LevelCreate();
+	LevelCreate(level);
 	resetGraph();
 
+}
+
+void Graph::undoClick()
+{
+	auto row = m_lastPressed.x;
+	auto col = m_lastPressed.y;
+	m_tiles[row][col].setMode(false);
 }
