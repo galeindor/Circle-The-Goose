@@ -11,7 +11,7 @@ constexpr auto MENU_BUTTONS = 3;
 constexpr auto NUM_OF_BUTTONS = 6;
 constexpr auto NUM_OF_PICS = 14;
 constexpr auto DIRECTIONS = 4;
-constexpr auto NUM_OF_SOUNDS = 8;
+constexpr auto NUM_OF_SOUNDS = 1;
 constexpr auto PLAYABLE = 4;
 
 enum MenuButtons
@@ -43,7 +43,7 @@ enum class CollisionStatus
 
 enum LoadSoundBuffers
 {
-	start_sound , victory_sound , fire_sound , ogre_sound , gate_sound , teleport_sound , gnome_sound , countdown_sound
+	honk_sound
 };
 
 const std::string buttonTextures[NUM_OF_BUTTONS][2] = { {"home-button.png"} , {"restart-button.png"} ,
@@ -52,8 +52,7 @@ const std::string buttonTextures[NUM_OF_BUTTONS][2] = { {"home-button.png"} , {"
 														{"exit.png", "exitP.png"} ,
 														{ "help.png","helpP.png"} };
 
-const std::string soundBuffers[NUM_OF_SOUNDS] = { "startGame.wav" , "victory.wav" , "fire.wav" , "ogre.wav" , "gate.wav" ,
-												  "teleport.wav" , "gnome.wav" ,"countdown.wav" };
+const std::string soundBuffers[NUM_OF_SOUNDS] = { {"honk.wav" } };;
 
 const std::string objectTextures[NUM_OF_PICS][DIRECTIONS] = { {"kingSheet.png"},
 															  {"mageSheet.png"},

@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "macros.h"
 #include <vector>
 
 class Resources
@@ -12,6 +13,8 @@ public:
 	static Resources& instance();
 
 	sf::Font* getFont();
+	void playSound(int index);
+	void setVolume(int volume);
 
 /*
 	sf::Texture* getTexture(char c);
@@ -23,8 +26,6 @@ public:
 	
 	void drawPauseScreen(sf::RenderWindow& window);
 	void playMusic();
-	void playSound(int index);
-	void setVolume();
 	void setAnimation(int i ,sf::Time deltaTime, sf::Sprite& player , int dir);
 */
 
@@ -34,16 +35,16 @@ private:
 	Resources(const Resources&) = default;
 
 	sf::Font m_font;
+	sf::SoundBuffer m_buffers[NUM_OF_SOUNDS];
+	sf::Sound m_sounds[NUM_OF_SOUNDS];
+	void loadBuffers();
 
 /*
 	Resources& operator=(const Resources&) = default;
 
-	sf::SoundBuffer m_buffers[NUM_OF_SOUNDS];
-	sf::Sound m_sounds[NUM_OF_SOUNDS];
 	sf::Music m_music;
 
 	void loadTextures();
-	void loadBuffers();
 	void loadBackground();
 	void setPauseScreen();
 

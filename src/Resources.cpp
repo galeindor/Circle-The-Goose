@@ -3,7 +3,6 @@
 Resources::Resources()
 {
 	/*loadTextures();
-	loadBuffers();
 	loadBackground();
 	setPauseScreen();
 	for (int i = 0; i < 5; i++)
@@ -11,6 +10,8 @@ Resources::Resources()
 		m_animation[i] = Animation(m_textures[i],sf::Vector2u(3, 4), 1);
 	}
 	*/
+
+	loadBuffers();
 	m_font.loadFromFile("font.ttf");
 }
 
@@ -31,7 +32,36 @@ sf::Font* Resources::getFont()
 	return &m_font;
 }
 
+//=======================================================================================
+void Resources::loadBuffers()
+{
+	for (int i = 0; i < NUM_OF_SOUNDS; i++)
+	{
+		if (!m_buffers[i].loadFromFile(soundBuffers[i]))
+			return;
+		m_sounds[i].setBuffer(m_buffers[i]);
+		m_sounds[i].setVolume(20);
+	}
+}
 //======================================================================================
+
+//=======================================================================================
+void Resources::playSound(int index)
+{
+	m_sounds[index].play();
+}
+
+//=======================================================================================
+void Resources::setVolume(int volume)
+{
+	static bool music_on = true;
+
+	for (int i = 0; i < NUM_OF_SOUNDS; i++)
+	{
+		m_sounds[i].setVolume(volume);
+	}
+}
+
 
 /*
 void Resources::setAnimation(int i ,sf::Time deltaTime, sf::Sprite& player , int dir)
@@ -147,51 +177,9 @@ void Resources::loadBackground()
 	m_bg.push_back(loadPic);
 }
 
-//=======================================================================================
-void Resources::loadBuffers()
-{
-	for (int i = 0; i < NUM_OF_SOUNDS; i++)
-	{
-		if(!m_buffers[i].loadFromFile(soundBuffers[i]))
-			return;
-		m_sounds[i].setBuffer(m_buffers[i]);
-		m_sounds[i].setVolume(20);
-	}
-	m_music.openFromFile("bgMusic2.wav");
-	m_music.setLoop(true);
-	m_music.setVolume(20);
-}
 
-//=======================================================================================
-void Resources::playSound(int index) 
-{
-	m_sounds[index].play();
-}
 
-//=======================================================================================
-void Resources::setVolume()
-{
-	static bool music_on = true;
-	int volume = 20;
 
-	if (music_on)
-	{
-		volume = 0;
-		music_on = false;
-		m_pauseButtons[Music].setOutlineColor(sf::Color::Red);
-	}
-	else
-	{
-		m_pauseButtons[Music].setOutlineColor(sf::Color::Green);
-		music_on = true;
-	}
-
-	for (int i = 0; i < NUM_OF_SOUNDS; i++)
-	{
-		m_sounds[i].setVolume(volume);
-	}
-	m_music.setVolume(volume);
-}
 
 //=======================================================================================
 void Resources::drawPauseScreen(sf::RenderWindow& window)

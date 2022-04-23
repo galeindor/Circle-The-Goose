@@ -3,10 +3,10 @@
 
 
 GameController::GameController()
-	:m_window(sf::VideoMode(1600, 1000), "Circle The Cat") , m_graph() , m_level(1)
+	:m_window(sf::VideoMode(1600, 1000), "Circle The GOOSE") , m_graph() , m_level(1)
 {
 	m_undoButton = Button( sf::Vector2f(400, 910) , "undo" );
-	m_texture.loadFromFile("duck.png");
+	m_texture.loadFromFile("goose.png");
 	auto tile = m_graph.getMiddleTile();
 	m_enemy = Enemy(tile, m_texture);
 }
@@ -60,7 +60,10 @@ void GameController::MouseClick(sf::Vector2f location)
 			return;
 		}
 		else
+		{
 			m_enemy.SetNextTile(m_graph.CalculateShortestPath(enemyTile));
+			Resources::instance().playSound(honk_sound);
+		}
 	}
 	else if (m_undoButton.handleClick(location))
 	{
