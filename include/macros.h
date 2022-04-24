@@ -40,6 +40,8 @@ enum LoadSoundBuffers
 	honk_sound
 };
 
+const std::string enemyTexture= { "goose.png"};
+
 const std::string screenTextures[NUM_OF_SCREENS] = { "loseScreen.png" , "winScreen.png"};
 
 const std::string soundBuffers[NUM_OF_SOUNDS] = { "honk.wav" };

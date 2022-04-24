@@ -14,13 +14,14 @@ public:
 
 	sf::Texture* getScreenTexture(bool victoryFlag);
 	sf::Font* getFont();
+	sf::Texture* getTexture(int i);
+
 	void playSound(int index);
 	void setVolume(int volume);
 	void setPopOutScreen(sf::RectangleShape& rect , sf::Text& text);
 	void initText(sf::Text& text);
 /*
 	sf::Texture* getTexture(char c);
-	sf::Texture* getTexture(int i , int j);
 	sf::Texture* getButtonTexture(int i , bool pressed);
 	sf::Texture* getBackground(int index);
 	sf::RectangleShape* getPauseButtons(int index);
@@ -38,6 +39,7 @@ private:
 	sf::Font m_font;
 	sf::SoundBuffer m_buffers[NUM_OF_SOUNDS];
 	sf::Texture m_screenTextures[NUM_OF_SCREENS];
+	sf::Texture m_enemyTexture;
 	sf::Sound m_sounds[NUM_OF_SOUNDS];
 
 	void loadBuffers();

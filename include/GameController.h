@@ -29,17 +29,17 @@ private:
 	int m_level;
 	int m_numOfClicks;
 
+	sf::RenderWindow m_window;
 	sf::Text m_levelText;
 	sf::Text m_clickCounterText;
 
-	sf::RenderWindow m_window;
-	sf::Texture m_texture;
+
 	Graph m_graph;
 	Enemy m_enemy;
-	Button m_undoButton;
+
+	// buttons used to undo last move and reset the board to the current level
+	Button m_undoButton; 
 	Button m_resetButton;
-
-
 
 	sf::RectangleShape m_popOutScreen; // screen used when victory or loss accures
 

@@ -68,6 +68,8 @@ void Resources::loadTextures()
 	for (int i = 0; i < NUM_OF_SCREENS ; i++)
 		m_screenTextures[i].loadFromFile(screenTextures[i]);
 
+	m_enemyTexture.loadFromFile(enemyTexture);
+
 }
 
 //======================================================================================
@@ -116,6 +118,12 @@ void Resources::initText(sf::Text& text)
 	
 }
 //=======================================================================================
+
+sf::Texture* Resources::getTexture(int i)
+{
+	return &m_enemyTexture;
+}
+
 /*
 void Resources::setAnimation(int i ,sf::Time deltaTime, sf::Sprite& player , int dir)
 {

@@ -39,8 +39,8 @@ private:
 	list < Tile* > m_adj; // list of adjacent tiles
 	sf::CircleShape m_shape;
 
-	// for bfs
-	bool m_visited; // if allready visited in current BFS run
+	// for BFS algorithm
+	bool m_visited; // if already visited in current BFS run
 	int m_distance; // distance from source tile
 	Tile* m_parent; // parent tile in current BFS run
 

@@ -77,20 +77,6 @@ bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 		}
 	}
 
-	/*
-	for (int row=0 ; row < TILES_NUM ; row++)
-	{
-		for (int col = 0; col < TILES_NUM; col++)
-		{
-			if (m_tiles[row][col].isClicked(location) && !m_tiles[row][col].isPressed())
-			{
-					m_tiles[row][col].setMode(true);
-					m_lastPressed = sf::Vector2f(row, col);
-					return true;
-			}
-		}
-	}
-	*/
 	return false;
 }
 
@@ -160,11 +146,11 @@ void Graph::LevelCreate(int levelNum)
 
 void Graph::BFS(Tile sourceTile)
 {
-	for (int i = 0; i < TILES_NUM; i++)
+	for (auto& row : m_tiles)
 	{
-		for (int j = 0; j < TILES_NUM; j++)
+		for (auto tile = row.begin(); tile != row.end(); tile++)
 		{
-			m_tiles[i][j].resetTile();
+			tile->resetTile();
 		}
 	}
 
@@ -235,8 +221,10 @@ bool Graph::enemyOnEdge(sf::Vector2f enemyLoc)
 
 void Graph::resetGraph()
 {
-	m_lastPressed = nullptr;
-	for (int i = 0; i < TILES_NUM; i++ )
+	m_lastPressed = nullptr; 
+
+	// set graph to be the current level saved
+	for (int i = 0; i < TILES_NUM; i++ ) 
 	{
 		for (int j = 0; j < TILES_NUM; j++ )
 		{
@@ -254,6 +242,8 @@ void Graph::newLevel(int level)
 
 }
 
+//=======================================================================================
+
 bool Graph::undoClick()
 {
 	if (!m_lastPressed) // if there is no last pressed
@@ -262,3 +252,5 @@ bool Graph::undoClick()
 	m_lastPressed = nullptr;
 	return true;
 }
+
+//=======================================================================================

@@ -12,9 +12,9 @@ GameController::GameController()
 
 	m_undoButton	= Button	( sf::Vector2f(400, 910) , "undo" );
 	m_resetButton	= Button	( sf::Vector2f(WINDOW_WIDTH-400, 910) , "reset");
-	m_texture.loadFromFile("goose.png");
+
 	auto tile = m_graph.getMiddleTile();
-	m_enemy = Enemy(tile, m_texture);
+	m_enemy = Enemy(tile, *Resources::instance().getTexture(0));
 }
 
 //=======================================================================================
