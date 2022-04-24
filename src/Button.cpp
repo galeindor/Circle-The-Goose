@@ -32,9 +32,9 @@ void Button::initButton()
 {
     m_buttonText.setFont(*Resources::instance().getFont());
     m_buttonText.setCharacterSize(40);
-    m_buttonText.setOutlineColor(sf::Color::Blue);
+    m_buttonText.setOutlineColor(sf::Color::Black);
     m_buttonText.setOutlineThickness(3);
-    m_buttonText.setColor(sf::Color::Blue);
+    m_buttonText.setColor(sf::Color::White);
 
     auto textRect = m_buttonText.getLocalBounds();
     m_buttonText.setOrigin(textRect.left + textRect.width / 2.0f,

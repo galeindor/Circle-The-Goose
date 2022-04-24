@@ -24,24 +24,20 @@ public:
 private:
 
 	void MouseClick(sf::Vector2f location);
+	void popOutScreen(bool isVictory);
+	int m_level;
 
 	sf::RenderWindow m_window;
 	sf::Texture m_texture;
 	Graph m_graph;
 	Enemy m_enemy;
-
-	bool m_timerIsOver;
-	bool m_isLvlRunning;
-
-	vector<std::unique_ptr<int>> m_movingObj;
-	vector<std::unique_ptr<int>> m_staticObj;
-
-
-	int m_level;
-	sf::Text m_levelText;
-	sf::Text m_timeLeftText;
-
 	Button m_undoButton;
+
+	//sf::Text m_levelText;
+	//sf::Text m_timeLeftText;
+
+	sf::RectangleShape m_popOutScreen; // screen used when victory or loss accures
+
 };
 
 

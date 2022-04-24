@@ -12,14 +12,15 @@ public:
 	~Resources();
 	static Resources& instance();
 
+	sf::Texture* getScreenTexture(bool victoryFlag);
 	sf::Font* getFont();
 	void playSound(int index);
 	void setVolume(int volume);
+	void setPopOutScreen(sf::RectangleShape& rect , sf::Text& text);
 
 /*
 	sf::Texture* getTexture(char c);
 	sf::Texture* getTexture(int i , int j);
-	sf::Texture* getTexture(int i);
 	sf::Texture* getButtonTexture(int i , bool pressed);
 	sf::Texture* getBackground(int index);
 	sf::RectangleShape* getPauseButtons(int index);
@@ -36,15 +37,17 @@ private:
 
 	sf::Font m_font;
 	sf::SoundBuffer m_buffers[NUM_OF_SOUNDS];
+	sf::Texture m_screenTextures[NUM_OF_SCREENS];
 	sf::Sound m_sounds[NUM_OF_SOUNDS];
+
 	void loadBuffers();
+	void loadTextures();
 
 /*
 	Resources& operator=(const Resources&) = default;
 
 	sf::Music m_music;
 
-	void loadTextures();
 	void loadBackground();
 	void setPauseScreen();
 
@@ -54,7 +57,6 @@ private:
 
 	sf::Texture m_buttonTextures[NUM_OF_BUTTONS][2];
 
-	sf::Texture m_textures[NUM_OF_PICS][DIRECTIONS];
 	std::vector < sf::Texture > m_bg;
 	
 

@@ -2,7 +2,7 @@
 
 Resources::Resources()
 {
-	/*loadTextures();
+	/*
 	loadBackground();
 	setPauseScreen();
 	for (int i = 0; i < 5; i++)
@@ -11,6 +11,7 @@ Resources::Resources()
 	}
 	*/
 
+	loadTextures();
 	loadBuffers();
 	m_font.loadFromFile("font.ttf");
 }
@@ -43,7 +44,6 @@ void Resources::loadBuffers()
 		m_sounds[i].setVolume(20);
 	}
 }
-//======================================================================================
 
 //=======================================================================================
 void Resources::playSound(int index)
@@ -61,7 +61,55 @@ void Resources::setVolume(int volume)
 		m_sounds[i].setVolume(volume);
 	}
 }
+//======================================================================================
 
+void Resources::loadTextures()
+{
+	for (int i = 0; i < NUM_OF_SCREENS ; i++)
+		m_screenTextures[i].loadFromFile(screenTextures[i]);
+
+}
+
+//======================================================================================
+
+sf::Texture* Resources::getScreenTexture(bool victoryFlag)
+{
+	switch (victoryFlag)
+	{
+	case State::EnemyEscaped:
+		return &m_screenTextures[load_escaped];
+	case State::EnemyTrapped:
+		return &m_screenTextures[load_trapped];
+	default:
+		break;
+	}
+}
+
+//=========================================================================
+void Resources::setPopOutScreen(sf::RectangleShape& rect, sf::Text& text)
+{
+	//rect.setFillColor(sf::Color(255, 255, 255, 155)); // set transperancy
+
+	auto size = sf::Vector2f(WINDOW_WIDTH / 1.5f, WINDOW_HEIGHT / 1.5f);
+	rect.setSize(size);
+	rect.setOrigin(size.x / 2, size.y / 2);
+
+	auto loc = sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	rect.setPosition(loc);
+	
+	text.setCharacterSize(40);
+	text.setFont(m_font);
+	text.setLetterSpacing(0.8f);
+	text.setColor(sf::Color::White);
+	text.setOutlineColor(sf::Color::Black);
+	text.setOutlineThickness(3);
+
+	auto textRect = text.getLocalBounds();
+	text.setOrigin(textRect.left + textRect.width / 2.0f,
+		textRect.top + textRect.height / 2.0f);
+	
+	text.setPosition(loc.x , loc.y + 400);
+}
 
 /*
 void Resources::setAnimation(int i ,sf::Time deltaTime, sf::Sprite& player , int dir)
@@ -95,20 +143,6 @@ void Resources::setPauseScreen()
 //=======================================================================================
 
 //=======================================================================================
-void Resources::loadTextures()
-{
-	for (int i = 0; i < NUM_OF_PICS; i++)
-		for (int j = 0; j< DIRECTIONS ; j++)
-			m_textures[i][j].loadFromFile(objectTextures[i][j]);
-
-	for (int i = 0; i < NUM_OF_BUTTONS; i++)
-	{
-		for (int j = 0; j < 2; j++)
-		{
-			m_buttonTextures[i][j].loadFromFile(buttonTextures[i][j]);
-		}
-	}
-}
 
 //=======================================================================================
 sf::Texture* Resources::getTexture(char c)

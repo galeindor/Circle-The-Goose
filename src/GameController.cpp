@@ -3,7 +3,7 @@
 
 
 GameController::GameController()
-	:m_window(sf::VideoMode(1600, 1000), "Circle The GOOSE") , m_graph() , m_level(1)
+	:m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Circle The GOOSE") , m_graph() , m_level(1)
 {
 	m_undoButton = Button( sf::Vector2f(400, 910) , "undo" );
 	m_texture.loadFromFile("goose.png");
@@ -40,6 +40,10 @@ void GameController::run()
 				break;
 			}
 		}
+		if (m_enemy.isTrapped())
+		{
+			nextLevel();
+		}
 	}
 }
 
@@ -48,12 +52,7 @@ void GameController::MouseClick(sf::Vector2f location)
 	auto enemyTile = m_enemy.getCurrTile();
 	if (m_graph.handleClick(location, enemyTile)) // calculate enemy movement
 	{
-		if (m_enemy.isTrapped())
-		{
-			nextLevel();
-			return;
-		}
-
+		
 		if (m_graph.enemyOnEdge(enemyTile.getLocation()))
 		{
 			resetBoard();
@@ -77,6 +76,7 @@ void GameController::resetBoard()
 	m_graph.resetGraph();
 	auto tile = m_graph.getMiddleTile();
 	m_enemy.SetNextTile(&tile);
+	popOutScreen(EnemyEscaped);
 }
 
 void GameController::nextLevel()
@@ -84,4 +84,32 @@ void GameController::nextLevel()
 	m_graph.newLevel(++m_level);
 	auto tile = m_graph.getMiddleTile();
 	m_enemy.SetNextTile(&tile);
+	popOutScreen(EnemyTrapped);
+}
+
+void GameController::popOutScreen(bool isVictory)
+{
+	m_popOutScreen.setTexture(Resources::instance().getScreenTexture(isVictory));
+	auto screenText = sf::Text();
+	screenText.setString("Press 'Space' or 'Esc' to Continue");
+
+	Resources::instance().setPopOutScreen(m_popOutScreen, screenText);
+
+	while (m_window.isOpen())
+	{
+		m_window.clear(sf::Color(169, 169, 169));
+		m_window.draw(m_popOutScreen); 
+		m_window.draw(screenText);
+		m_window.display();
+
+		if (auto event = sf::Event{}; m_window.waitEvent(event))
+		{
+			if ((event.type == sf::Event::Closed) ||
+				((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) ||
+				((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space)))
+			{
+				return;
+			}
+		}
+	}
 }

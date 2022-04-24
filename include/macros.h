@@ -3,16 +3,12 @@
 #include <SFML/Graphics.hpp>
 
 constexpr auto WINDOW_WIDTH = 1600;
-constexpr auto WINDOW_HEIGHT = 800;
+constexpr auto WINDOW_HEIGHT = 1000;
 constexpr auto STAGE_TIME = 150;
 constexpr auto BAR_SIZE = 100;
 constexpr auto BOARD_SIZE = 700;
-constexpr auto MENU_BUTTONS = 3;
-constexpr auto NUM_OF_BUTTONS = 6;
-constexpr auto NUM_OF_PICS = 14;
-constexpr auto DIRECTIONS = 4;
+constexpr auto NUM_OF_SCREENS = 3;
 constexpr auto NUM_OF_SOUNDS = 1;
-constexpr auto PLAYABLE = 4;
 
 enum MenuButtons
 {
@@ -29,16 +25,14 @@ enum Directions
 	Down , Left , Right , Up
 };
 
-enum LoadTextures
+enum LoadScreens
 {
-	load_King, load_Mage, load_Warrior, load_Thief , load_ThiefKey,
-	load_Wall , load_Throne, load_Fire, load_Orge, load_Teleport, load_Gate,
-	load_Key, load_Gnome, load_Gift
+	load_escaped , load_trapped
 };
 
-enum class CollisionStatus
+enum State
 {
-	Destroy, Good, Not_Valid, Won, Teleport, Gift, Ogre, Block
+	EnemyTrapped = true , EnemyEscaped = false
 };
 
 enum LoadSoundBuffers
@@ -46,18 +40,6 @@ enum LoadSoundBuffers
 	honk_sound
 };
 
-const std::string buttonTextures[NUM_OF_BUTTONS][2] = { {"home-button.png"} , {"restart-button.png"} ,
-														{"music-button.png","music-buttonP.png"} ,
-														{"start.png","startP.png"} ,
-														{"exit.png", "exitP.png"} ,
-														{ "help.png","helpP.png"} };
+const std::string screenTextures[NUM_OF_SCREENS] = { "loseScreen.png" , "winScreen.png"};
 
-const std::string soundBuffers[NUM_OF_SOUNDS] = { {"honk.wav" } };;
-
-const std::string objectTextures[NUM_OF_PICS][DIRECTIONS] = { {"kingSheet.png"},
-															  {"mageSheet.png"},
-															  {"warriorSheet.png"},
-															  {"thiefSheet.png" },
-															  {"thiefKeySheet.png"},
-															  {"wall.png"}, {"throne.png"}, {"fire.png"}, {"ogre.png"},
-															  {"teleport.png"}, {"gate.png"}, {"key.png"}, {"gnome.png"}, { "gift.png"} };
+const std::string soundBuffers[NUM_OF_SOUNDS] = { "honk.wav" };
