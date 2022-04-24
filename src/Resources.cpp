@@ -2,15 +2,6 @@
 
 Resources::Resources()
 {
-	/*
-	loadBackground();
-	setPauseScreen();
-	for (int i = 0; i < 5; i++)
-	{
-		m_animation[i] = Animation(m_textures[i],sf::Vector2u(3, 4), 1);
-	}
-	*/
-
 	loadTextures();
 	loadBuffers();
 	m_font.loadFromFile("font.ttf");
@@ -90,7 +81,6 @@ sf::Texture* Resources::getScreenTexture(bool victoryFlag)
 //=========================================================================
 void Resources::setPopOutScreen(sf::RectangleShape& rect, sf::Text& text)
 {
-	//rect.setFillColor(sf::Color(255, 255, 255, 155)); // set transperancy
 
 	auto size = sf::Vector2f(WINDOW_WIDTH / 1.5f, WINDOW_HEIGHT / 1.5f);
 	rect.setSize(size);

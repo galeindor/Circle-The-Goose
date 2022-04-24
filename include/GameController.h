@@ -1,14 +1,9 @@
 #pragma once
 
-#include <vector>
-#include <SFML/Graphics.hpp>
 #include "Enemy.h"
 #include "Graph.h"
 #include "Button.h"
 
-//#include "Resources.h"
-//#include "Consts.h"
-//#include "LevelManager.h"
 
 using std::vector;
 

@@ -2,28 +2,14 @@
 
 #include <SFML/Graphics.hpp>
 
+constexpr auto TILES_NUM = 11;
+constexpr auto SPACING = 75;
 constexpr auto WINDOW_WIDTH = 1600;
 constexpr auto WINDOW_HEIGHT = 1000;
-constexpr auto STAGE_TIME = 150;
 constexpr auto BAR_SIZE = 100;
-constexpr auto BOARD_SIZE = 700;
 constexpr auto NUM_OF_SCREENS = 3;
 constexpr auto NUM_OF_SOUNDS = 1;
 
-enum MenuButtons
-{
-	StartGame=3 , Help=5 , Exit=4
-};
-
-enum PauseButtons
-{
-	Home , Restart , Music
-};
-
-enum Directions
-{
-	Down , Left , Right , Up
-};
 
 enum LoadScreens
 {
@@ -35,7 +21,7 @@ enum State
 	EnemyTrapped = true , EnemyEscaped = false
 };
 
-enum LoadSoundBuffers
+enum Sounds
 {
 	honk_sound
 };

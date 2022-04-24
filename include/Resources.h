@@ -1,10 +1,24 @@
 #pragma once
 
+// ==================== include section ======================
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "macros.h"
 #include <vector>
+#include <list>
+#include <memory>
+#include <queue>
+#include <SFML/Graphics.hpp>
+#include <algorithm>
+#include <stdlib.h> 
+#include <time.h> 
+
+using std::vector;
+using std::list;
+
+// ==========================================================
+
 
 class Resources
 {
@@ -20,6 +34,7 @@ public:
 	void setVolume(int volume);
 	void setPopOutScreen(sf::RectangleShape& rect , sf::Text& text);
 	void initText(sf::Text& text);
+
 /*
 	sf::Texture* getTexture(char c);
 	sf::Texture* getButtonTexture(int i , bool pressed);

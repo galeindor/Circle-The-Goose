@@ -2,10 +2,6 @@
 
 #include "Tile.h"
 
-const int TILES_NUM = 11;
-const int SPACING = 75;
-const int ROW_SPACING = 10;
-
 class Graph
 {
 public:
