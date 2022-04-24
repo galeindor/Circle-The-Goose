@@ -18,6 +18,6 @@ public:
 private:
 
 	sf::Text m_buttonText;
-	int m_type;
-	void initButton(); // set the buttons default values
+
+	//void initButton(); // set the buttons default values
 };

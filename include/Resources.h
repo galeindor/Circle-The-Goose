@@ -17,7 +17,7 @@ public:
 	void playSound(int index);
 	void setVolume(int volume);
 	void setPopOutScreen(sf::RectangleShape& rect , sf::Text& text);
-
+	void initText(sf::Text& text);
 /*
 	sf::Texture* getTexture(char c);
 	sf::Texture* getTexture(int i , int j);

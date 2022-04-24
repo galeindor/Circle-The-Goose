@@ -97,6 +97,12 @@ void Resources::setPopOutScreen(sf::RectangleShape& rect, sf::Text& text)
 	auto loc = sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	rect.setPosition(loc);
 	
+	initText(text);
+	text.setPosition(loc.x, loc.y + 400);
+}
+//=======================================================================================
+void Resources::initText(sf::Text& text)
+{
 	text.setCharacterSize(40);
 	text.setFont(m_font);
 	text.setLetterSpacing(0.8f);
@@ -108,9 +114,8 @@ void Resources::setPopOutScreen(sf::RectangleShape& rect, sf::Text& text)
 	text.setOrigin(textRect.left + textRect.width / 2.0f,
 		textRect.top + textRect.height / 2.0f);
 	
-	text.setPosition(loc.x , loc.y + 400);
 }
-
+//=======================================================================================
 /*
 void Resources::setAnimation(int i ,sf::Time deltaTime, sf::Sprite& player , int dir)
 {
@@ -140,7 +145,6 @@ void Resources::setPauseScreen()
 	m_pauseText.setPosition(sf::Vector2f(660, 260));
 }
 
-//=======================================================================================
 
 //=======================================================================================
 

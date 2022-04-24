@@ -38,6 +38,7 @@ void Graph::initGraph()
 			createTileAdjacent(i, j);
 	}
 
+	m_lastPressed = sf::Vector2f(-1, -1);
 	LevelCreate(1); // create a randomized level
 	
 }
@@ -123,7 +124,7 @@ void Graph::createTileAdjacent(int row, int col)
 
 void Graph::LevelCreate(int levelNum)
 {
-	int limitOfLitTiles = 15 - (levelNum % 4) * 2 ; // change 
+	int limitOfLitTiles = 15 - 2* (levelNum % 3) ; // change 
 	int currentLitTiles = 0;
 	
 	m_currLevel.clear();
@@ -145,7 +146,7 @@ void Graph::LevelCreate(int levelNum)
 
 		// middle tile is preserved to the enemy , so it may not start pressed
 		if (rowIndex == TILES_NUM / 2 && colIndex == TILES_NUM / 2 ) 
-			break;
+			continue;
 
 		m_tiles[rowIndex][colIndex].setMode(true);
 		m_currLevel[rowIndex][colIndex] = true;
@@ -232,6 +233,7 @@ bool Graph::enemyOnEdge(sf::Vector2f enemyLoc)
 
 void Graph::resetGraph()
 {
+	m_lastPressed = sf::Vector2f(-1, -1);
 	for (int i = 0; i < TILES_NUM; i++ )
 	{
 		for (int j = 0; j < TILES_NUM; j++ )
@@ -250,9 +252,12 @@ void Graph::newLevel(int level)
 
 }
 
-void Graph::undoClick()
+bool Graph::undoClick()
 {
 	auto row = m_lastPressed.x;
 	auto col = m_lastPressed.y;
+	if (row < 0 || col < 0) // if there is no last pressed
+		return false;
 	m_tiles[row][col].setMode(false);
+	return true;
 }

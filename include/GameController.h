@@ -25,7 +25,12 @@ private:
 
 	void MouseClick(sf::Vector2f location);
 	void popOutScreen(bool isVictory);
+
 	int m_level;
+	int m_numOfClicks;
+
+	sf::Text m_levelText;
+	sf::Text m_clickCounterText;
 
 	sf::RenderWindow m_window;
 	sf::Texture m_texture;
@@ -33,8 +38,7 @@ private:
 	Enemy m_enemy;
 	Button m_undoButton;
 
-	//sf::Text m_levelText;
-	//sf::Text m_timeLeftText;
+
 
 	sf::RectangleShape m_popOutScreen; // screen used when victory or loss accures
 

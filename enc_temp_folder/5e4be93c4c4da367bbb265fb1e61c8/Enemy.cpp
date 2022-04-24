@@ -39,9 +39,9 @@ void Enemy::SetNextTile(Tile* tile)
 //=======================================================================================
 void Enemy::returnToLastTile()
 {
-	m_currTile = m_lastTile;
 	m_location = m_lastTile.getLocation();
 	m_sprite.setPosition(m_location);
+	m_currTile = m_lastTile;
 	m_enemyTrapped = false;
 }
 //=======================================================================================
