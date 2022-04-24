@@ -10,7 +10,8 @@ GameController::GameController()
 	m_clickCounterText.setPosition(sf::Vector2f(30, 150));
 	m_levelText.setPosition(sf::Vector2f(30, 200));
 
-	m_undoButton = Button( sf::Vector2f(400, 910) , "undo" );
+	m_undoButton	= Button	( sf::Vector2f(400, 910) , "undo" );
+	m_resetButton	= Button	( sf::Vector2f(WINDOW_WIDTH-400, 910) , "reset");
 	m_texture.loadFromFile("goose.png");
 	auto tile = m_graph.getMiddleTile();
 	m_enemy = Enemy(tile, m_texture);
@@ -30,7 +31,7 @@ void GameController::run()
 		m_graph.draw(m_window);
 		m_enemy.draw(m_window);
 		m_undoButton.draw(m_window);
-
+		m_resetButton.draw(m_window);
 		m_window.draw(m_clickCounterText);
 		m_window.draw(m_levelText);
 
@@ -74,12 +75,13 @@ void GameController::MouseClick(sf::Vector2f location)
 		if (m_graph.enemyOnEdge(enemyTile.getLocation()))
 		{
 			resetBoard();
+			popOutScreen(EnemyEscaped);
 			return;
 		}
 		else
 		{
 			m_enemy.SetNextTile(m_graph.CalculateShortestPath(enemyTile));
-			Resources::instance().playSound(honk_sound);
+			//Resources::instance().playSound(honk_sound);
 		}
 	}
 	else if (m_undoButton.handleClick(location))
@@ -87,6 +89,10 @@ void GameController::MouseClick(sf::Vector2f location)
 		m_enemy.returnToLastTile();
 		if(m_graph.undoClick())
 			m_numOfClicks--;
+	}
+	else if (m_resetButton.handleClick(location))
+	{
+		resetBoard();
 	}
 }
 //=======================================================================================
@@ -97,7 +103,6 @@ void GameController::resetBoard()
 	m_graph.resetGraph();
 	auto tile = m_graph.getMiddleTile();
 	m_enemy.SetNextTile(&tile);
-	popOutScreen(EnemyEscaped);
 }
 
 //=======================================================================================

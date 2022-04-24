@@ -37,6 +37,7 @@ private:
 	Graph m_graph;
 	Enemy m_enemy;
 	Button m_undoButton;
+	Button m_resetButton;
 
 
 

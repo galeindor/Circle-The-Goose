@@ -22,7 +22,7 @@ public:
 
 private:
 	
-	sf::Vector2f m_lastPressed; // index of last pressed tile
+	Tile* m_lastPressed; // index of last pressed tile
 	
 	void BFS(Tile sourceTile);
 	void initGraph(); // initiate graph with randomized level.

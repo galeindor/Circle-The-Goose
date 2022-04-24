@@ -38,7 +38,7 @@ void Graph::initGraph()
 			createTileAdjacent(i, j);
 	}
 
-	m_lastPressed = sf::Vector2f(-1, -1);
+	m_lastPressed = nullptr;
 	LevelCreate(1); // create a randomized level
 	
 }
@@ -61,22 +61,23 @@ void Graph::draw(sf::RenderWindow& window)
 bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 {
 
-	/*
-	for (auto row : m_tiles)
-	{
-		for (auto& tile : row)
-		{
-			if (tile.isClicked(location))
-			{
-				tile.setMode(true);
-			}
-		}
-	}
-	*/
-
 	if (invalidTile.isClicked(location))
 		return false;
 
+	for (auto& row : m_tiles)
+	{
+		for (auto tile = row.begin() ; tile != row.end() ; tile++)
+		{
+			if (tile->isClicked(location))
+			{
+				tile->setMode(true);
+				m_lastPressed = &*tile;
+				return true;
+			}
+		}
+	}
+
+	/*
 	for (int row=0 ; row < TILES_NUM ; row++)
 	{
 		for (int col = 0; col < TILES_NUM; col++)
@@ -89,6 +90,7 @@ bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 			}
 		}
 	}
+	*/
 	return false;
 }
 
@@ -233,7 +235,7 @@ bool Graph::enemyOnEdge(sf::Vector2f enemyLoc)
 
 void Graph::resetGraph()
 {
-	m_lastPressed = sf::Vector2f(-1, -1);
+	m_lastPressed = nullptr;
 	for (int i = 0; i < TILES_NUM; i++ )
 	{
 		for (int j = 0; j < TILES_NUM; j++ )
@@ -254,10 +256,9 @@ void Graph::newLevel(int level)
 
 bool Graph::undoClick()
 {
-	auto row = m_lastPressed.x;
-	auto col = m_lastPressed.y;
-	if (row < 0 || col < 0) // if there is no last pressed
+	if (!m_lastPressed) // if there is no last pressed
 		return false;
-	m_tiles[row][col].setMode(false);
+	m_lastPressed->setMode(false);
+	m_lastPressed = nullptr;
 	return true;
 }
