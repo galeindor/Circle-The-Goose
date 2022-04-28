@@ -5,4 +5,5 @@
                                               "Enemy.cpp"
                                               "Button.cpp"
                                               "Resources.cpp"
+                                              "Animation.cpp"
                                               )

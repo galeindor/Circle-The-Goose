@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "macros.h"
+#include "Animation.h"
 #include <vector>
 #include <list>
 #include <memory>
@@ -29,11 +30,12 @@ public:
 	sf::Texture* getScreenTexture(bool victoryFlag);
 	sf::Font* getFont();
 	sf::Texture* getTexture(int i);
-
+	sf::Texture* getBackground() { return &m_screenTextures[load_bg]; }
 	void playSound(int index);
 	void setVolume(int volume);
 	void setPopOutScreen(sf::RectangleShape& rect , sf::Text& text);
 	void initText(sf::Text& text);
+	void setAnimation(float deltaTime, sf::Sprite& player, int dir);
 
 /*
 	sf::Texture* getTexture(char c);
@@ -57,6 +59,8 @@ private:
 	sf::Texture m_enemyTexture;
 	sf::Sound m_sounds[NUM_OF_SOUNDS];
 
+	Animation m_animation;
+
 	void loadBuffers();
 	void loadTextures();
 
@@ -77,7 +81,7 @@ private:
 	std::vector < sf::Texture > m_bg;
 	
 
-	Animation m_animation[5];
+	
 */
 
 };

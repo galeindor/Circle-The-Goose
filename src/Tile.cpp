@@ -2,11 +2,11 @@
 #include "Tile.h"
 
 Tile::Tile(sf::Vector2f location)
-	: m_mode(false) 
+	: m_mode(false), m_onEdge(false)
 {
 	m_shape = sf::CircleShape(30.f);
 	m_shape.setPosition(location);
-	m_shape.setFillColor(sf::Color(135, 206, 235));
+	m_shape.setFillColor(sf::Color(95, 158, 160));
 	m_shape.setOutlineThickness(3);
 	m_shape.setOutlineColor(sf::Color::Black);
 }
@@ -30,7 +30,7 @@ void Tile::setMode(bool newMode)
 	if (newMode)
 		m_shape.setFillColor(sf::Color(0, 0, 205));
 	else
-		m_shape.setFillColor(sf::Color(135, 206, 235));
+		m_shape.setFillColor(sf::Color(95, 158, 160));
 
 	
 }
@@ -77,4 +77,11 @@ Tile* Tile::getParent() const
 	if (m_parent)
 		return m_parent;
 	return nullptr;
+}
+
+//=======================================================================================
+
+void Tile::setEdge()
+{
+	m_onEdge = true;
 }

@@ -2,12 +2,14 @@
 
 Resources::Resources()
 {
+	m_animation = Animation(m_enemyTexture, sf::Vector2u(3, 4), 1);
 	loadTextures();
 	loadBuffers();
 	m_font.loadFromFile("font.ttf");
 }
 
 //=======================================================================================
+
 Resources::~Resources(){}
 
 //=======================================================================================
@@ -114,15 +116,16 @@ sf::Texture* Resources::getTexture(int i)
 	return &m_enemyTexture;
 }
 
-/*
-void Resources::setAnimation(int i ,sf::Time deltaTime, sf::Sprite& player , int dir)
+//=======================================================================================
+void Resources::setAnimation(float deltaTime, sf::Sprite& player , int dir)
 {
-	m_animation[i].update(dir, deltaTime);
-	player.setTextureRect(m_animation[i].uvRect);
+	m_animation.update(dir, deltaTime);
+	player.setTextureRect(m_animation.uvRect);
+	player.setScale(1.5f, 1.5f);
 }
 
-
 //=======================================================================================
+/*
 void Resources::setPauseScreen()
 {
 	m_pauseWindow.setFillColor(sf::Color(179, 218, 255, 255));

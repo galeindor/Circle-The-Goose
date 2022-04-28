@@ -7,6 +7,9 @@ GameController::GameController()
 	Resources::instance().initText(m_clickCounterText);
 	Resources::instance().initText(m_levelText);
 
+	m_bg.setTexture(*Resources::instance().getBackground());
+	m_bg.setColor(sf::Color(255, 255, 255, 150));
+
 	m_clickCounterText.setPosition(sf::Vector2f(30, 150));
 	m_levelText.setPosition(sf::Vector2f(30, 200));
 
@@ -27,15 +30,9 @@ void GameController::run()
 		m_clickCounterText.setString("Number of Clicks: " + std::to_string(m_numOfClicks));
 		m_levelText.setString("Current level: " + std::to_string(m_level));
 
-		m_window.clear(sf::Color(169, 169, 169));
-		m_graph.draw(m_window);
-		m_enemy.draw(m_window);
-		m_undoButton.draw(m_window);
-		m_resetButton.draw(m_window);
-		m_window.draw(m_clickCounterText);
-		m_window.draw(m_levelText);
+		drawGame();
 
-		m_window.display();
+
 		for (auto event = sf::Event{}; m_window.pollEvent(event); )
 		{
  			switch (event.type)
@@ -57,10 +54,9 @@ void GameController::run()
 				break;
 			}
 		}
+		
 		if (m_enemy.isTrapped())
-		{
 			nextLevel();
-		}
 	}
 }
 
@@ -80,8 +76,8 @@ void GameController::MouseClick(sf::Vector2f location)
 		}
 		else
 		{
-			m_enemy.SetNextTile(m_graph.CalculateShortestPath(enemyTile));
-			//Resources::instance().playSound(honk_sound);
+			m_enemy.SetNextTile(m_graph.CalculateShortestPath(enemyTile),m_window);
+			Resources::instance().playSound(honk_sound);
 		}
 	}
 	else if (m_undoButton.handleClick(location))
@@ -102,7 +98,7 @@ void GameController::resetBoard()
 	m_numOfClicks = 0;
 	m_graph.resetGraph();
 	auto tile = m_graph.getMiddleTile();
-	m_enemy.SetNextTile(&tile);
+	m_enemy.SetNextTile(&tile,m_window);
 }
 
 //=======================================================================================
@@ -112,7 +108,7 @@ void GameController::nextLevel()
 	m_numOfClicks = 0;
 	m_graph.newLevel(++m_level);
 	auto tile = m_graph.getMiddleTile();
-	m_enemy.SetNextTile(&tile);
+	m_enemy.SetNextTile(&tile , m_window);
 	popOutScreen(EnemyTrapped);
 }
 
@@ -128,7 +124,8 @@ void GameController::popOutScreen(bool isVictory)
 
 	while (m_window.isOpen())
 	{
-		m_window.clear(sf::Color(169, 169, 169));
+		m_window.clear(sf::Color::White);
+		m_window.draw(m_bg);
 		m_window.draw(m_popOutScreen); 
 		m_window.draw(screenText);
 		m_window.display();
@@ -143,4 +140,19 @@ void GameController::popOutScreen(bool isVictory)
 			}
 		}
 	}
+}
+
+//=======================================================================================
+
+void GameController::drawGame()
+{
+	m_window.clear(sf::Color::White);
+	m_window.draw(m_bg);
+	m_graph.draw(m_window);
+	m_enemy.draw(m_window);
+	m_undoButton.draw(m_window);
+	m_resetButton.draw(m_window);
+	m_window.draw(m_clickCounterText);
+	m_window.draw(m_levelText);
+	m_window.display();
 }

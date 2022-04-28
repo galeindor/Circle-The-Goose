@@ -18,6 +18,7 @@ public:
 
 private:
 
+	void drawGame();
 	void MouseClick(sf::Vector2f location);
 	void popOutScreen(bool isVictory);
 
@@ -27,7 +28,7 @@ private:
 	sf::RenderWindow m_window;
 	sf::Text m_levelText;
 	sf::Text m_clickCounterText;
-
+	sf::Sprite m_bg;
 
 	Graph m_graph;
 	Enemy m_enemy;

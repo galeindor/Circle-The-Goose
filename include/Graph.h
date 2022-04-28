@@ -25,7 +25,9 @@ private:
 	void LevelCreate(int levelNum); // create randomized level
 	void createTileAdjacent(int i, int j); // create adjacent lists
 
-	vector < vector <Tile> > m_tiles; // all the graph tiles
+	bool edgeOfRange(int i); // return if index 'i' in on the edge of the range of tiles vector.
+
 	std::vector <Tile*> m_edges; // graph edges
+	vector < vector <Tile> > m_tiles; // all the graph tiles
 	vector < vector <bool> > m_currLevel; // member to store current level setup
 };

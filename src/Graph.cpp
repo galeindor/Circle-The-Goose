@@ -20,22 +20,24 @@ void Graph::initGraph()
 		for (int j = 0; j < TILES_NUM ; j++)
 		{
 			auto loc = sf::Vector2f(375 + SPACING * (j + (rowShift / 2) ) , 75 + SPACING * i);
-			row.push_back(Tile(loc));
+			auto currTile = Tile(loc);
+			row.push_back(currTile);
 		}
 		m_tiles.push_back(row);
 	}
 
-	// create adjacent lists and m_edges
+	// create adjacent lists 
 	for (int i = 0; i < TILES_NUM; i++)
 	{
-		m_edges.push_back(&m_tiles[i][0] );
-		m_edges.push_back(&m_tiles[0][i] );
-
-		m_edges.push_back(&m_tiles [i] [TILES_NUM - 1] );
-		m_edges.push_back(&m_tiles [TILES_NUM - 1] [i] );
-
 		for (int j = 0; j < TILES_NUM; j++)
+		{
 			createTileAdjacent(i, j);
+			if (edgeOfRange(j) || edgeOfRange(j))
+			{
+				m_edges.push_back(&m_tiles[i][j]);
+				m_tiles[i][j].setEdge();
+			}
+		}
 	}
 
 	m_lastPressed = nullptr;
@@ -45,6 +47,7 @@ void Graph::initGraph()
 
 //=======================================================================================
 
+//=======================================================================================
 void Graph::draw(sf::RenderWindow& window)
 {
 	for (auto row : m_tiles)
@@ -68,7 +71,7 @@ bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
 	{
 		for (auto tile = row.begin() ; tile != row.end() ; tile++)
 		{
-			if (tile->isClicked(location))
+			if (tile->isClicked(location) && !tile->isPressed())
 			{
 				tile->setMode(true);
 				m_lastPressed = &*tile;
@@ -254,3 +257,8 @@ bool Graph::undoClick()
 }
 
 //=======================================================================================
+
+bool Graph::edgeOfRange(int i)
+{
+	return (i == TILES_NUM - 1 || i == 0);
+}

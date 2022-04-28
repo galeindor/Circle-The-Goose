@@ -12,10 +12,12 @@ public:
 	Tile*	getParent()	const;
 	void	resetTile();
 	void	setMode(bool newMode);
+	void	setEdge();
 	void	draw(sf::RenderWindow& window);
 	void	addAdj(Tile* other);
 	void	visit(int distance , Tile* parent);
 
+	bool			isOnEdge()			const		{ return m_onEdge;				}
 	bool			isPressed()			const		{ return m_mode;				}
 	bool			isVisited()			const		{ return m_visited;				}
 	list <Tile*>	getAdjList()		const		{ return m_adj;					}
@@ -23,6 +25,9 @@ public:
 	sf::Vector2f	getLocation()		const		{ return m_shape.getPosition(); }
 
 private:
+
+	bool m_onEdge;
+
 	bool m_mode; // each tile contains if the tile is coloured.
 	list < Tile* > m_adj; // list of adjacent tiles
 	sf::CircleShape m_shape;
