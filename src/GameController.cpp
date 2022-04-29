@@ -76,7 +76,8 @@ void GameController::MouseClick(sf::Vector2f location)
 		}
 		else
 		{
-			m_enemy.SetNextTile(m_graph.CalculateShortestPath(enemyTile),m_window);
+			auto nextTile = m_enemy.findNextTile(m_graph.CalculateShortestPath(enemyTile));
+			moveEnemy(nextTile);
 			Resources::instance().playSound(honk_sound);
 		}
 	}
@@ -91,6 +92,7 @@ void GameController::MouseClick(sf::Vector2f location)
 		resetBoard();
 	}
 }
+
 //=======================================================================================
 
 void GameController::resetBoard()
@@ -98,7 +100,7 @@ void GameController::resetBoard()
 	m_numOfClicks = 0;
 	m_graph.resetGraph();
 	auto tile = m_graph.getMiddleTile();
-	m_enemy.SetNextTile(&tile,m_window);
+	m_enemy.setTile(tile);
 }
 
 //=======================================================================================
@@ -108,7 +110,7 @@ void GameController::nextLevel()
 	m_numOfClicks = 0;
 	m_graph.newLevel(++m_level);
 	auto tile = m_graph.getMiddleTile();
-	m_enemy.SetNextTile(&tile , m_window);
+	m_enemy.setTile(tile);
 	popOutScreen(EnemyTrapped);
 }
 
@@ -118,7 +120,7 @@ void GameController::popOutScreen(bool isVictory)
 {
 	m_popOutScreen.setTexture(Resources::instance().getScreenTexture(isVictory));
 	auto screenText = sf::Text();
-	screenText.setString("Press 'Space' or 'Esc' to Continue");
+	screenText.setString("Press any key to Continue");
 
 	Resources::instance().setPopOutScreen(m_popOutScreen, screenText);
 
@@ -132,12 +134,8 @@ void GameController::popOutScreen(bool isVictory)
 
 		if (auto event = sf::Event{}; m_window.waitEvent(event))
 		{
-			if ((event.type == sf::Event::Closed) ||
-				((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) ||
-				((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space)))
-			{
+			if ( (event.type == sf::Event::KeyPressed))
 				return;
-			}
 		}
 	}
 }
@@ -155,4 +153,27 @@ void GameController::drawGame()
 	m_window.draw(m_clickCounterText);
 	m_window.draw(m_levelText);
 	m_window.display();
+}
+
+//=======================================================================================
+
+void GameController::moveEnemy(Tile* tile)
+{
+	if (!tile)
+		return;
+
+	auto dest = tile->getLocation();
+	sf::Clock clock;
+	
+	sf::Vector2f direction = dest - m_enemy.getCurrTile().getLocation();
+	
+	while (m_enemy.moveValidator(dest))
+	{
+		auto delta = clock.restart().asSeconds();
+		m_enemy.animateMovement(direction, delta);
+		drawGame();
+	}
+	
+	m_enemy.setTile(*tile);
+
 }

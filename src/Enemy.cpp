@@ -23,25 +23,22 @@ Enemy::Enemy(Tile currTile, const sf::Texture& texture)
 
 //=======================================================================================
 
-void Enemy::SetNextTile(Tile* tile , sf::RenderWindow& window)
+Tile* Enemy::findNextTile(Tile* tile)
 {
 
 	if (!tile) // if there is no possible way to the edges
 	{
-		if (!moveRandom()) // if there are no valid moves - enemy is trapped
+		auto nextTile = moveRandom();
+		if (!nextTile) // if moveRandom returned nullptr - no valid moves , enemy is trapped
+		{
 			m_enemyTrapped = true;
-		return;
+			return nullptr;
+		}
+		return nextTile; // return the tile returned by random movement
+		
 	}
-	else // found at least one path to the edges
-	{
-		animateMovement(tile->getLocation(),window);
-		//Resources::instance().setAnimation(0.1f, m_sprite, m_dir);
-		m_lastTile = m_currTile;
-		m_currTile = *tile;
-		m_location = tile->getLocation();
-		m_sprite.setPosition(m_location);
-		m_enemyTrapped = false;
-	}
+
+	return tile; // if tile is not nullptr - tile is the next destination
 }
 
 //=======================================================================================
@@ -54,7 +51,7 @@ void Enemy::returnToLastTile()
 }
 //=======================================================================================
 
-bool Enemy::moveRandom()
+Tile* Enemy::moveRandom()
 {
 	srand(time(NULL));
 
@@ -62,31 +59,8 @@ bool Enemy::moveRandom()
 
 	int randAdj = rand() % 5; 
 
-/*
-	auto first = adjList.begin();
-
-	int counter = 0;
-	for (auto adj : adjList)
-	{
-		if (adj->isPressed())
-			counter++;
-		else
-			break;
-	}
-	if(counter == adjList.size())
-		return false; // no valid moves , enemy is trapped
-
-	int index = rand() % (adjList.size()-1);
-	auto tile = (*first + index);
-
-	while (tile->isPressed()) // do until an unpressed tile is found
-	{
-		index = rand() % (m_currTile.getAdjList().size());
-		tile = (*first+ index);
-	}
-*/
-
 	int foundNotPresssed=0;
+
 	while (1)
 	{
 		for (auto i = adjList.begin(); i != adjList.end(); ++i)
@@ -96,18 +70,14 @@ bool Enemy::moveRandom()
 				foundNotPresssed++;
 				if (foundNotPresssed >= randAdj)
 				{
-					m_currTile = **i;
-					m_location = (*i)->getLocation();
-					m_sprite.setPosition(m_location);
-					m_lastTile = m_currTile;
-					return true; // there was a valid move
+					return *i; // there was a valid move
 				}
 			}
 		}
 		if (foundNotPresssed == 0)
-			return false;
+			return nullptr;
 	}
-	return false; // no valid moves , enemy is trapped
+	return nullptr; // no valid moves , enemy is trapped
 }
 
 //=======================================================================================
@@ -119,22 +89,14 @@ void Enemy::draw(sf::RenderWindow& window)
 
 //=======================================================================================
 
-void Enemy::animateMovement(sf::Vector2f dest , sf::RenderWindow& window)
+void Enemy::animateMovement(sf::Vector2f direction , float delta)
 {
-	sf::Clock clock;
+	auto speedPerSecond = 1.f;
 
-	auto speedPerSecond = 0.5f;
-	sf::Vector2f direction = dest - m_location;
 	m_dir =  getAnimationDirection(direction);
-	while( std::abs(m_sprite.getPosition().x - dest.x) > epsilon || std::abs(m_sprite.getPosition().y - dest.y) > epsilon)
-	{
-		const auto delta = clock.restart().asSeconds();
-		m_sprite.move(direction * speedPerSecond * delta);
-		m_location = m_sprite.getPosition();
-		Resources::instance().setAnimation(delta, m_sprite, m_dir);
-		draw(window);
-		window.display();
-	}
+	m_sprite.move(direction * speedPerSecond * delta);
+	m_location = m_sprite.getPosition();
+	Resources::instance().setAnimation(delta, m_sprite, m_dir);
 }
 
 //========================================================================
@@ -149,4 +111,19 @@ int Enemy::getAnimationDirection(sf::Vector2f direction)
 
 	else
 		return Up;
+}
+//==========================================================================
+
+bool Enemy::moveValidator(sf::Vector2f dest)
+{
+	return (std::abs(m_sprite.getPosition().x - dest.x) > epsilon || std::abs(m_sprite.getPosition().y - dest.y) > epsilon);
+}
+
+//==========================================================================
+void Enemy::setTile(Tile tile)
+{
+	m_location = tile.getLocation();
+	m_sprite.setPosition(m_location);
+	m_lastTile = m_currTile;
+	m_currTile = tile;
 }

@@ -32,7 +32,7 @@ void Graph::initGraph()
 		for (int j = 0; j < TILES_NUM; j++)
 		{
 			createTileAdjacent(i, j);
-			if (edgeOfRange(j) || edgeOfRange(j))
+			if (edgeOfRange(i) || edgeOfRange(j))
 			{
 				m_edges.push_back(&m_tiles[i][j]);
 				m_tiles[i][j].setEdge();

@@ -11,16 +11,19 @@ public:
 	Enemy(Tile currTile, const sf::Texture& texture);
 
 	void returnToLastTile();
-	void SetNextTile(Tile* tile,sf::RenderWindow& window);
+	void animateMovement(sf::Vector2f direction, float delta);
 	void draw(sf::RenderWindow& window);
+	void setTile(Tile tile);
+	
+	Tile*			findNextTile(Tile* tile);
 	Tile			getLastTile()	const		{ return m_lastTile; }
 	Tile			getCurrTile()	const		{ return m_currTile; }
 	bool			isTrapped()		const		{ return m_enemyTrapped; }
+	bool			moveValidator(sf::Vector2f dest);
 
 private:
 
-	void animateMovement(sf::Vector2f dest, sf::RenderWindow& window);
-	bool moveRandom();
+	Tile* moveRandom();
 	int getAnimationDirection(sf::Vector2f direction);
 
 	Tile m_currTile; // current tile enemy is standing on

@@ -24,7 +24,7 @@ enum State
 
 enum Directions
 {
-	Down, Left, Right, Up
+	Down=0, Left, Right, Up=3
 };
 
 enum Sounds

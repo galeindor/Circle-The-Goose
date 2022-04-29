@@ -21,7 +21,7 @@ private:
 	void drawGame();
 	void MouseClick(sf::Vector2f location);
 	void popOutScreen(bool isVictory);
-
+	void moveEnemy(Tile* tile);
 	int m_level;
 	int m_numOfClicks;
 
