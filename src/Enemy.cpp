@@ -126,4 +126,5 @@ void Enemy::setTile(Tile tile)
 	m_sprite.setPosition(m_location);
 	m_lastTile = m_currTile;
 	m_currTile = tile;
+	m_enemyTrapped = false;
 }

@@ -101,6 +101,7 @@ void GameController::resetBoard()
 	m_graph.resetGraph();
 	auto tile = m_graph.getMiddleTile();
 	m_enemy.setTile(tile);
+	m_enemy.setTile(tile); // second time is in order to set lastloc to the current tile
 }
 
 //=======================================================================================
@@ -111,6 +112,7 @@ void GameController::nextLevel()
 	m_graph.newLevel(++m_level);
 	auto tile = m_graph.getMiddleTile();
 	m_enemy.setTile(tile);
+	m_enemy.setTile(tile); // second time is in order to set lastTile to the current tile
 	popOutScreen(EnemyTrapped);
 }
 
@@ -134,7 +136,7 @@ void GameController::popOutScreen(bool isVictory)
 
 		if (auto event = sf::Event{}; m_window.waitEvent(event))
 		{
-			if ( (event.type == sf::Event::KeyPressed))
+			if ((event.type == sf::Event::KeyPressed) || event.type == sf::Event::Closed)
 				return;
 		}
 	}
