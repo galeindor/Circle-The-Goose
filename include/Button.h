@@ -7,12 +7,12 @@ class Button
 {
 public:
 	Button() {}
-	Button(const sf::Vector2f& pos , const sf::String& text );
+	Button(const sf::Vector2f& pos , const sf::String& text);
 
 	// check click on the button
-	bool handleClick(const sf::Vector2f& location);
+	bool handleClick(const sf::Vector2f& location) const;
 
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 
 
 private:

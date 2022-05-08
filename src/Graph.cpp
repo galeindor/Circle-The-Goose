@@ -21,6 +21,7 @@ void Graph::initGraph()
 		{
 			auto loc = sf::Vector2f(375 + SPACING * (j + (rowShift / 2) ) , 75 + SPACING * i);
 			auto currTile = Tile(loc);
+			currTile.setMode(false);
 			row.push_back(currTile);
 		}
 		m_tiles.push_back(row);
@@ -46,8 +47,6 @@ void Graph::initGraph()
 }
 
 //=======================================================================================
-
-//=======================================================================================
 void Graph::draw(sf::RenderWindow& window)
 {
 	for (auto row : m_tiles)
@@ -61,7 +60,7 @@ void Graph::draw(sf::RenderWindow& window)
 
 //=======================================================================================
 
-bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile)
+bool Graph::handleClick(const sf::Vector2f& location , Tile invalidTile) 
 {
 
 	if (invalidTile.isClicked(location))
@@ -212,7 +211,7 @@ Tile* Graph::CalculateShortestPath(Tile sourceTile)
 
 //=======================================================================================
 
-bool Graph::enemyOnEdge(sf::Vector2f enemyLoc)
+bool Graph::enemyOnEdge(sf::Vector2f enemyLoc) const
 {
 	for (auto& tile : m_edges)
 		if (tile->getLocation() == enemyLoc)
@@ -258,7 +257,14 @@ bool Graph::undoClick()
 
 //=======================================================================================
 
-bool Graph::edgeOfRange(int i)
+bool Graph::edgeOfRange(int i) const
 {
 	return (i == TILES_NUM - 1 || i == 0);
+}
+
+//========================================================================================
+
+Tile Graph::getMiddleTile() const
+{
+	return m_tiles[TILES_NUM / 2][TILES_NUM / 2]; 
 }

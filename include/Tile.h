@@ -30,7 +30,7 @@ private:
 
 	bool m_mode; // each tile contains if the tile is coloured.
 	list < Tile* > m_adj; // list of adjacent tiles
-	sf::CircleShape m_shape;
+	sf::Sprite m_shape;
 
 	// for BFS algorithm
 	bool m_visited; // if already visited in current BFS run

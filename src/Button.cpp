@@ -13,13 +13,13 @@ Button::Button(const sf::Vector2f& pos , const sf::String& text)
 }
 
 //=======================================================================================
-void Button::draw(sf::RenderWindow& window)
+void Button::draw(sf::RenderWindow& window) const
 {
     window.draw(m_buttonText);
 }
 
 //=======================================================================================
-bool Button::handleClick(const sf::Vector2f& location)
+bool Button::handleClick(const sf::Vector2f& location) const
 {
     if (m_buttonText.getGlobalBounds().contains(location))
         return true;

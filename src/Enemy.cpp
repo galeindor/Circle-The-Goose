@@ -1,8 +1,6 @@
 
 #include "Enemy.h"
 
-const auto epsilon = 1.f;
-
 Enemy::Enemy()
 	:m_location(), m_lastTile(sf::Vector2f()), m_sprite(), m_currTile(sf::Vector2f())
 {
@@ -10,15 +8,14 @@ Enemy::Enemy()
 
 //=======================================================================================
 
-Enemy::Enemy(Tile currTile, const sf::Texture& texture)
+Enemy::Enemy(Tile currTile)
 	:m_location(currTile.getLocation()), m_lastTile(currTile) , m_currTile(currTile) , m_enemyTrapped(false)
 {
-	//m_speedPerSecond = m_sprite.getScale().x * 30;
 	Resources::instance().setAnimation(0.1f, m_sprite, m_dir);
-	m_sprite.setTexture(texture);
+	m_sprite.setTexture(*Resources::instance().getTexture(_enemy));
 	m_sprite.setPosition(currTile.getLocation());
 	auto origin = m_sprite.getOrigin();
-	m_sprite.setOrigin(sf::Vector2f(origin.x, origin.y +5));
+	m_sprite.setOrigin(sf::Vector2f(origin.x + 5, origin.y + 5)); // set origin to centerize the enemy on tile
 }
 
 //=======================================================================================
@@ -82,7 +79,7 @@ Tile* Enemy::moveRandom()
 
 //=======================================================================================
 
-void Enemy::draw(sf::RenderWindow& window)
+void Enemy::draw(sf::RenderWindow& window) const
 {
 	window.draw(m_sprite);
 }
@@ -91,7 +88,7 @@ void Enemy::draw(sf::RenderWindow& window)
 
 void Enemy::animateMovement(sf::Vector2f direction , float delta)
 {
-	auto speedPerSecond = 1.f;
+	auto speedPerSecond = 1.5f;
 
 	m_dir =  getAnimationDirection(direction);
 	m_sprite.move(direction * speedPerSecond * delta);
@@ -114,8 +111,10 @@ int Enemy::getAnimationDirection(sf::Vector2f direction)
 }
 //==========================================================================
 
-bool Enemy::moveValidator(sf::Vector2f dest)
+bool Enemy::moveValidator(sf::Vector2f dest) const
 {
+	const auto epsilon = 2.f;
+
 	return (std::abs(m_sprite.getPosition().x - dest.x) > epsilon || std::abs(m_sprite.getPosition().y - dest.y) > epsilon);
 }
 

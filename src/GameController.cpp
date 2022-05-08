@@ -17,13 +17,15 @@ GameController::GameController()
 	m_resetButton	= Button	( sf::Vector2f(WINDOW_WIDTH-400, 910) , "reset");
 
 	auto tile = m_graph.getMiddleTile();
-	m_enemy = Enemy(tile, *Resources::instance().getTexture(0));
+	m_enemy = Enemy(tile);
 }
 
 //=======================================================================================
 
 void GameController::run()
 {
+	auto moveInProgress = false; // check if there is move in progress and block multiple presses
+
 	while (m_window.isOpen())
 	{
 
@@ -48,12 +50,18 @@ void GameController::run()
 				switch (event.mouseButton.button)
 				{
 				case sf::Mouse::Button::Left:
-					MouseClick(location);
+					if (!moveInProgress)
+					{
+						moveInProgress = true;
+						MouseClick(location);
+					}
 					break;
 				}
 				break;
 			}
 		}
+
+		moveInProgress = false;
 		
 		if (m_enemy.isTrapped())
 			nextLevel();
@@ -65,10 +73,12 @@ void GameController::run()
 void GameController::MouseClick(sf::Vector2f location)
 {
 	auto enemyTile = m_enemy.getCurrTile();
-	if (m_graph.handleClick(location, enemyTile)) // calculate enemy movement
+
+	// check if there was a click on a valid tile ( enemy isnt on that tile and tile wasnt pressed)
+	if (m_graph.handleClick(location, enemyTile))
 	{
 		m_numOfClicks++;
-		if (m_graph.enemyOnEdge(enemyTile.getLocation()))
+		if (m_graph.enemyOnEdge(enemyTile.getLocation())) //check if enemy tile is an edge tile
 		{
 			resetBoard();
 			popOutScreen(EnemyEscaped);
@@ -78,16 +88,16 @@ void GameController::MouseClick(sf::Vector2f location)
 		{
 			auto nextTile = m_enemy.findNextTile(m_graph.CalculateShortestPath(enemyTile));
 			moveEnemy(nextTile);
-			Resources::instance().playSound(honk_sound);
+			Resources::instance().playSound();
 		}
 	}
-	else if (m_undoButton.handleClick(location))
+	else if (m_undoButton.handleClick(location)) // if presssed undo button
 	{
 		m_enemy.returnToLastTile();
 		if(m_graph.undoClick())
 			m_numOfClicks--;
 	}
-	else if (m_resetButton.handleClick(location))
+	else if (m_resetButton.handleClick(location)) // if pressed reset button
 	{
 		resetBoard();
 	}
@@ -136,7 +146,10 @@ void GameController::popOutScreen(bool isVictory)
 
 		if (auto event = sf::Event{}; m_window.waitEvent(event))
 		{
-			if ((event.type == sf::Event::KeyPressed) || event.type == sf::Event::Closed)
+			if (event.type == sf::Event::Closed)
+				m_window.close();
+
+			if (event.type == sf::Event::KeyPressed)
 				return;
 		}
 	}
@@ -144,7 +157,7 @@ void GameController::popOutScreen(bool isVictory)
 
 //=======================================================================================
 
-void GameController::drawGame()
+void GameController::drawGame() 
 {
 	m_window.clear(sf::Color::White);
 	m_window.draw(m_bg);
@@ -167,7 +180,7 @@ void GameController::moveEnemy(Tile* tile)
 	auto dest = tile->getLocation();
 	sf::Clock clock;
 	
-	sf::Vector2f direction = dest - m_enemy.getCurrTile().getLocation();
+	auto direction = dest - m_enemy.getCurrTile().getLocation();
 	
 	while (m_enemy.moveValidator(dest))
 	{

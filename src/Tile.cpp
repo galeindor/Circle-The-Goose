@@ -4,11 +4,9 @@
 Tile::Tile(sf::Vector2f location)
 	: m_mode(false), m_onEdge(false)
 {
-	m_shape = sf::CircleShape(30.f);
+	resetTile();
+	m_shape.setTexture(*Resources::instance().getTexture(_tile));
 	m_shape.setPosition(location);
-	m_shape.setFillColor(sf::Color(95, 158, 160));
-	m_shape.setOutlineThickness(3);
-	m_shape.setOutlineColor(sf::Color::Black);
 }
 
 //=======================================================================================
@@ -28,9 +26,9 @@ void Tile::setMode(bool newMode)
 	m_mode = newMode;
 
 	if (newMode)
-		m_shape.setFillColor(sf::Color(0, 0, 205));
+		m_shape.setColor(sf::Color::White);
 	else
-		m_shape.setFillColor(sf::Color(95, 158, 160));
+		m_shape.setColor(sf::Color(255, 255, 255, 130 ));
 
 	
 }

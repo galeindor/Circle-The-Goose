@@ -2,9 +2,10 @@
 
 Resources::Resources()
 {
-	m_animation = Animation(m_enemyTexture, sf::Vector2u(3, 4), 1);
 	loadTextures();
 	loadBuffers();
+
+	m_animation = Animation(m_textures[_enemy], sf::Vector2u(3, 4), 1);
 	m_font.loadFromFile("font.ttf");
 }
 
@@ -21,27 +22,18 @@ Resources& Resources::instance()
 }
 
 //=======================================================================================
-sf::Font* Resources::getFont()
-{
-	return &m_font;
-}
-
-//=======================================================================================
 void Resources::loadBuffers()
 {
-	for (int i = 0; i < NUM_OF_SOUNDS; i++)
-	{
-		if (!m_buffers[i].loadFromFile(soundBuffers[i]))
+	if (!m_buffer.loadFromFile(soundBuffer))
 			return;
-		m_sounds[i].setBuffer(m_buffers[i]);
-		m_sounds[i].setVolume(20);
+		m_sounds.setBuffer(m_buffer);
+		m_sounds.setVolume(20);
 	}
-}
 
 //=======================================================================================
-void Resources::playSound(int index)
+void Resources::playSound()
 {
-	m_sounds[index].play();
+	m_sounds.play();
 }
 
 //=======================================================================================
@@ -49,10 +41,7 @@ void Resources::setVolume(int volume)
 {
 	static bool music_on = true;
 
-	for (int i = 0; i < NUM_OF_SOUNDS; i++)
-	{
-		m_sounds[i].setVolume(volume);
-	}
+	m_sounds.setVolume((float)volume);
 }
 //======================================================================================
 
@@ -61,13 +50,14 @@ void Resources::loadTextures()
 	for (int i = 0; i < NUM_OF_SCREENS ; i++)
 		m_screenTextures[i].loadFromFile(screenTextures[i]);
 
-	m_enemyTexture.loadFromFile(enemyTexture);
+	for (int i = 0; i < NUM_OF_PICS; i++)
+		m_textures[i].loadFromFile(textures[i]);
 
 }
 
 //======================================================================================
 
-sf::Texture* Resources::getScreenTexture(bool victoryFlag)
+sf::Texture* Resources::getScreenTexture(bool victoryFlag) 
 {
 	switch (victoryFlag)
 	{
@@ -78,6 +68,7 @@ sf::Texture* Resources::getScreenTexture(bool victoryFlag)
 	default:
 		break;
 	}
+	return nullptr;
 }
 
 //=========================================================================
@@ -100,7 +91,7 @@ void Resources::initText(sf::Text& text)
 	text.setCharacterSize(40);
 	text.setFont(m_font);
 	text.setLetterSpacing(0.8f);
-	text.setColor(sf::Color::White);
+	//text.setColor(sf::Color::White);
 	text.setOutlineColor(sf::Color::Black);
 	text.setOutlineThickness(3);
 
@@ -108,12 +99,6 @@ void Resources::initText(sf::Text& text)
 	text.setOrigin(textRect.left + textRect.width / 2.0f,
 		textRect.top + textRect.height / 2.0f);
 	
-}
-//=======================================================================================
-
-sf::Texture* Resources::getTexture(int i)
-{
-	return &m_enemyTexture;
 }
 
 //=======================================================================================
@@ -125,119 +110,24 @@ void Resources::setAnimation(float deltaTime, sf::Sprite& player , int dir)
 }
 
 //=======================================================================================
-/*
-void Resources::setPauseScreen()
+
+sf::Texture* Resources::getTexture(int i)
 {
-	m_pauseWindow.setFillColor(sf::Color(179, 218, 255, 255));
-	m_pauseWindow.setPosition(sf::Vector2f(600, 250));
-	m_pauseWindow.setSize(sf::Vector2f(340, 230));
-	m_pauseWindow.setOutlineThickness(3);
-	m_pauseWindow.setOutlineColor(sf::Color::Black);
-	auto buttonSize = sf::Vector2f(30, 30);
-	auto buttonPos = sf::Vector2f(550, 450);
-
-	m_pauseText.setFont(m_font);
-	m_pauseText.setString("Pause");
-	m_pauseText.Bold;
-	m_pauseText.setOutlineColor(sf::Color(12, 36, 97, 255));
-	m_pauseText.setOutlineThickness(3);
-	m_pauseText.setCharacterSize(80);
-	m_pauseText.setColor(sf::Color(29, 209, 161, 255));
-	m_pauseText.setPosition(sf::Vector2f(660, 260));
-}
-
-
-//=======================================================================================
-
-//=======================================================================================
-sf::Texture* Resources::getTexture(char c)
-{
-	switch (c)
-	{
-	case 'K': return &m_textures[load_King][0];
-	case 'M': return &m_textures[load_Mage][0];
-	case 'W': return &m_textures[load_Warrior][0];
-	case 'T': return &m_textures[load_Thief][0];
-	case 'X': return &m_textures[load_Teleport][0];
-	case 'F': return &m_textures[load_Key][0];
-	case '=': return &m_textures[load_Wall][0];
-	case '@': return &m_textures[load_Throne][0];
-	case '#': return &m_textures[load_Gate][0];
-	case '!': return &m_textures[load_Orge][0];
-	case '*': return &m_textures[load_Fire][0];
-	case '^': return &m_textures[load_Gnome][0];
-	case '%': return &m_textures[load_Gift][0];
-	}
+	return &m_textures[i];
 }
 
 //=======================================================================================
-sf::Texture* Resources::getTexture(int index , int dir)
-{
-	return &m_textures[index][dir];
+
+sf::Texture* Resources::getBackground()
+{ 
+	return &m_screenTextures[load_bg]; 
 }
 
 //=======================================================================================
-sf::Texture* Resources::getTexture(int index) 
+
+sf::Font* Resources::getFont()
 {
-	return &m_textures[index][0];
+	return &m_font;
 }
 
 //=======================================================================================
-sf::Texture* Resources::getBackground(int index)
-{
-	return &m_bg[index];
-}
-
-//=======================================================================================
-sf::RectangleShape* Resources::getPauseButtons(int index)
-{
-	return &m_pauseButtons[index];
-}
-
-//=======================================================================================
-sf::Texture* Resources::getButtonTexture(int index , bool pressed)
-{
-	if(pressed)
-		return &m_buttonTextures[index][1];
-	return &m_buttonTextures[index][0];
-}
-
-//=======================================================================================
-void Resources::loadBackground()
-{
-	auto loadPic = sf::Texture();
-	loadPic.loadFromFile("gamebg.png");
-	m_bg.push_back(loadPic);
-
-	loadPic.loadFromFile("helpBar.png");
-	m_bg.push_back(loadPic);
-
-	loadPic.loadFromFile("bg.png");
-	m_bg.push_back(loadPic);
-}
-
-
-
-
-
-//=======================================================================================
-void Resources::drawPauseScreen(sf::RenderWindow& window)
-{
-	window.draw(m_pauseWindow);
-	window.draw(m_pauseText);
-}
-
-//=======================================================================================
-void Resources::playMusic()
-{
-	static bool musicOn = false; // check if the music is played.
-	if (!musicOn)
-	{
-		m_music.play();
-		musicOn = true;
-		return;
-	}
-	m_music.pause();
-	musicOn = false;
-}
-*/
