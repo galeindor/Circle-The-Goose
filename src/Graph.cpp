@@ -211,12 +211,9 @@ Tile* Graph::CalculateShortestPath(Tile sourceTile)
 
 //=======================================================================================
 
-bool Graph::enemyOnEdge(sf::Vector2f enemyLoc) const
+bool Graph::enemyOnEdge(Tile enemy) const
 {
-	for (auto& tile : m_edges)
-		if (tile->getLocation() == enemyLoc)
-			return true;
-	return false;
+	return enemy.isOnEdge();
 }
 
 //=======================================================================================

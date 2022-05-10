@@ -33,7 +33,7 @@ enum Pictures
 	_enemy , _tile
 };
 
-const std::string textures[NUM_OF_PICS] = { "goose.png" , "circle1.png" };
+const std::string textures[NUM_OF_PICS] = { "goose.png" , "circle.png" };
 
 const std::string screenTextures[NUM_OF_SCREENS] = { "loseScreen.png" , "winScreen.png" , "bg1.jpg"};
 

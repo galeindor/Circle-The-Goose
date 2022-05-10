@@ -28,9 +28,7 @@ void Tile::setMode(bool newMode)
 	if (newMode)
 		m_shape.setColor(sf::Color::White);
 	else
-		m_shape.setColor(sf::Color(255, 255, 255, 130 ));
-
-	
+		m_shape.setColor(sf::Color(0, 0, 0, 100 )); // faded version for un-pressed tile
 }
 
 //=======================================================================================
@@ -44,10 +42,7 @@ void Tile::draw(sf::RenderWindow& window)
 
 bool Tile::isClicked(const sf::Vector2f& location) const
 {
-	if (m_shape.getGlobalBounds().contains(location))
-		return true;
-
-	return false;
+	return m_shape.getGlobalBounds().contains(location);
 }
 
 //=======================================================================================

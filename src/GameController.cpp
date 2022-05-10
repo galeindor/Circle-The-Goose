@@ -78,7 +78,7 @@ void GameController::MouseClick(sf::Vector2f location)
 	if (m_graph.handleClick(location, enemyTile))
 	{
 		m_numOfClicks++;
-		if (m_graph.enemyOnEdge(enemyTile.getLocation())) //check if enemy tile is an edge tile
+		if (m_graph.enemyOnEdge(enemyTile)) //check if enemy tile is an edge tile
 		{
 			resetBoard();
 			popOutScreen(EnemyEscaped);

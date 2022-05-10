@@ -12,11 +12,11 @@ public:
 	void			draw(sf::RenderWindow& window);
 
 	bool			undoClick();
-	bool			enemyOnEdge(sf::Vector2f enemyLoc) const;
+	bool			enemyOnEdge(Tile enemyLoc) const; // check if the enemy is on edge piece
 	bool			handleClick(const sf::Vector2f& location, Tile invalidTile);
 
-	Tile			getMiddleTile() const;
-	Tile*			CalculateShortestPath(Tile sourceTile);
+	Tile			getMiddleTile() const; // get the middle of graph tile
+	Tile*			CalculateShortestPath(Tile sourceTile); 
 
 private:
 	

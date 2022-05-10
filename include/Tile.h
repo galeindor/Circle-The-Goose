@@ -10,12 +10,12 @@ public:
 
 	bool	isClicked	(const sf::Vector2f& location)  const;
 	Tile*	getParent()	const;
-	void	resetTile();
-	void	setMode(bool newMode);
-	void	setEdge();
-	void	draw(sf::RenderWindow& window);
-	void	addAdj(Tile* other);
-	void	visit(int distance , Tile* parent);
+	void	resetTile(); // set default values for BFS members
+	void	setMode(bool newMode); // set if tile is pressed/ unpressed
+	void	setEdge(); // set tile as an edge (of table) tile
+	void	draw(sf::RenderWindow& window); // draw the tile
+	void	addAdj(Tile* other); // add a tile to adjacent list of cuurent tile
+	void	visit(int distance , Tile* parent); // BFS visit the current tile
 
 	bool			isOnEdge()			const		{ return m_onEdge;				}
 	bool			isPressed()			const		{ return m_mode;				}
